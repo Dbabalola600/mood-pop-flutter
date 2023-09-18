@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     AppButton(
                       text: "Sign In",
-                      onPress: () => {Get.to(const DashBoardPage())},
+                      onPress: userLoginOnClick,
                       isDisabled: isButtonDisabled,
                     ),
                     const SizedBox(
