@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/displays/app_button.dart';
 import '../../components/displays/back_appbar.dart';
@@ -27,7 +28,6 @@ class _LoginPageState extends State<LoginPage> {
   bool isButtonDisabled = true;
   bool _isLoading = false;
 
-
   @override
   Widget build(BuildContext context) {
     void userLoginOnClick() async {
@@ -36,9 +36,11 @@ class _LoginPageState extends State<LoginPage> {
           loginIdController.text, passwordTextController.text);
 
       if (response["status"] == 200) {
-          var userId = response["data"]["_id"];
+        var userId = response["data"]["_id"];
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString("userId", userId);
 
-          
+        print(prefs.getString("userId"));
       } else {
         print("incorrect");
       }
