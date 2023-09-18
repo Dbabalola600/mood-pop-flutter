@@ -1,4 +1,3 @@
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,6 +6,7 @@ import 'package:get/get.dart';
 import '../../components/displays/app_button.dart';
 import '../../components/displays/back_appbar.dart';
 import '../../components/inputs/app_textfield.dart';
+import '../../requests/auth_request.dart';
 import '../../utils/colours.dart';
 import '../DashBoard/dash_board_page.dart';
 import 'signup_page.dart';
@@ -25,8 +25,27 @@ class _LoginPageState extends State<LoginPage> {
 
   // page state
   bool isButtonDisabled = true;
+  bool _isLoading = false;
+
+
   @override
   Widget build(BuildContext context) {
+    void userLoginOnClick() async {
+      _isLoading = true;
+      var response = await loginUserWithUsernameAndPassword(
+          loginIdController.text, passwordTextController.text);
+
+      if (response["status"] == 200) {
+          var userId = response["data"]["_id"];
+
+          
+      } else {
+        print("incorrect");
+      }
+
+      _isLoading = false;
+    }
+
     void isTextFieldBlankValidation(String value) {
       if (loginIdController.text.isEmpty ||
           passwordTextController.text.isEmpty) {
@@ -111,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                     AppButton(
                       text: "Sign In",
                       onPress: () => {Get.to(const DashBoardPage())},
-                      // isDisabled: isButtonDisabled,
+                      isDisabled: isButtonDisabled,
                     ),
                     const SizedBox(
                       height: 20,
