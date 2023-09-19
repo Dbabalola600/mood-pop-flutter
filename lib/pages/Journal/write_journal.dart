@@ -4,24 +4,22 @@ import '../../components/displays/logged_appbar.dart';
 import '../../components/navigation/app_drawer.dart';
 import '../../components/navigation/bottom_navbar.dart';
 import '../../utils/colours.dart';
-import '../DashBoard/dash_board_page.dart';
 import '../Notifications/notifications_page.dart';
+import '../Profile/profile_page.dart';
 
-
-
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+class WriteJournalPage extends StatefulWidget {
+  const WriteJournalPage({Key? key}) : super(key: key);
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<WriteJournalPage> createState() => _WriteJournalPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-  int _currentIndex = 2;
+class _WriteJournalPageState extends State<WriteJournalPage> {
+  int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    const DashBoardPage(),
+    const DashBoardContent(), // Replace with your dashboard content widget
     const NotificationsPage(),
-    const ProfileContent(),
+    const ProfilePage()
   ];
 
   @override
@@ -29,9 +27,9 @@ class _ProfilePageState extends State<ProfilePage> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-       appBar: loggedAppBar(() {}, "PROFILE"),
+        appBar: loggedAppBar(() {}, "WriteJournalPage"),
+        backgroundColor: secondaryColor,
         drawer: AppDrawer(),
-         backgroundColor: secondaryColor,
         bottomNavigationBar: CustomBottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: (index) {
@@ -57,14 +55,14 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-class ProfileContent extends StatelessWidget {
-  const ProfileContent({super.key});
+class DashBoardContent extends StatelessWidget {
+  const DashBoardContent({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Center(
         child: Text(
-      "Profile",
+      "WriteJournalPage",
       style: TextStyle(fontSize: 30, color: primaryColor),
     ));
   }

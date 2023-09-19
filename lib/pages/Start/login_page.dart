@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/displays/app_button.dart';
@@ -40,7 +41,9 @@ class _LoginPageState extends State<LoginPage> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("userId", userId);
 
-        print(prefs.getString("userId"));
+        // print(prefs.getString("userId"));
+
+        Get.to(const DashBoardPage());
       } else {
         print("incorrect");
       }
@@ -131,8 +134,9 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     AppButton(
                       text: "Sign In",
-                      onPress: userLoginOnClick,
-                      isDisabled: isButtonDisabled,
+                      // onPress: userLoginOnClick,
+                      onPress: ()=> Get.to(const DashBoardPage()),
+                      // isDisabled: isButtonDisabled,
                     ),
                     const SizedBox(
                       height: 20,

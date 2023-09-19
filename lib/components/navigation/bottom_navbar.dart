@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../pages/DashBoard/dash_board_page.dart';
+import '../../pages/Feed/feed_page.dart';
+import '../../pages/Journal/journal_page.dart';
 import '../../pages/Notifications/notifications_page.dart';
 import '../../pages/Profile/profile_page.dart';
+import '../../pages/Resources/resources_page.dart';
 import '../../utils/colours.dart';
-
-
 
 class CustomBottomNavigationBar extends StatefulWidget {
   final int currentIndex;
@@ -35,31 +36,45 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             Get.to(const DashBoardPage()); // Navigate to the home page
             break;
           case 1:
-            Get.to(
-                const NotificationsPage()); // Navigate to the notifications page
+            Get.to(const JournalPage()); // Navigate to the notifications page
             break;
           case 2:
-            Get.to(const ProfilePage()); // Navigate to the profile page
+            Get.to(const ResourcesPage()); // Navigate to the profile page
+            break;
+          case 3:
+            Get.to(const FeedPage()); // Navigate to the profile page
+            break;
+          case 4:
+            Get.to(const NotificationsPage()); // Navigate to the profile page
             break;
         }
       },
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
+          icon: Icon(Icons.dashboard),
+          label: 'DashBoard',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.book),
+          label: 'Journal',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.health_and_safety),
+          label: 'Resources',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.feedback_rounded),
+          label: 'Feed',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.notifications),
-          label: 'Notifications',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Profile',
+          label: 'Norifications',
         ),
       ],
       backgroundColor: disabledColor,
       selectedItemColor: primaryColor, // Customize the selected item color
-      unselectedItemColor: Colors.grey, // Customize the unselected item color
+      unselectedItemColor: blackColor, // Customize the unselected item color
+
       showUnselectedLabels:
           false, // Set to true to show labels for unselected items
       type:

@@ -5,23 +5,26 @@ import '../../components/navigation/app_drawer.dart';
 import '../../components/navigation/bottom_navbar.dart';
 import '../../utils/colours.dart';
 import '../DashBoard/dash_board_page.dart';
+import '../Journal/journal_page.dart';
 import '../Notifications/notifications_page.dart';
+import '../Profile/profile_page.dart';
+import '../Resources/resources_page.dart';
 
-
-
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+class FeedPage extends StatefulWidget {
+  const FeedPage({Key? key}) : super(key: key);
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<FeedPage> createState() => _FeedPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-  int _currentIndex = 2;
+class _FeedPageState extends State<FeedPage> {
+  int _currentIndex = 3;
 
   final List<Widget> _pages = [
     const DashBoardPage(),
+    const JournalPage(), // Replace with your dashboard content widget
+    const ResourcesPage(),
+    const FeedContent(),
     const NotificationsPage(),
-    const ProfileContent(),
   ];
 
   @override
@@ -29,9 +32,9 @@ class _ProfilePageState extends State<ProfilePage> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-       appBar: loggedAppBar(() {}, "PROFILE"),
+        appBar: loggedAppBar(() {}, "Feed"),
+        backgroundColor: secondaryColor,
         drawer: AppDrawer(),
-         backgroundColor: secondaryColor,
         bottomNavigationBar: CustomBottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: (index) {
@@ -57,14 +60,14 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-class ProfileContent extends StatelessWidget {
-  const ProfileContent({super.key});
+class FeedContent extends StatelessWidget {
+  const FeedContent({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Center(
         child: Text(
-      "Profile",
+      "Feed",
       style: TextStyle(fontSize: 30, color: primaryColor),
     ));
   }

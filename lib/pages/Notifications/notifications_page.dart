@@ -5,8 +5,10 @@ import '../../components/navigation/app_drawer.dart';
 import '../../components/navigation/bottom_navbar.dart';
 import '../../utils/colours.dart';
 import '../DashBoard/dash_board_page.dart';
+import '../Feed/feed_page.dart';
+import '../Journal/journal_page.dart';
 import '../Profile/profile_page.dart';
-
+import '../Resources/resources_page.dart';
 
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({Key? key}) : super(key: key);
@@ -15,12 +17,15 @@ class NotificationsPage extends StatefulWidget {
 }
 
 class _NotificationsPageState extends State<NotificationsPage> {
-  int _currentIndex = 1;
+  int _currentIndex = 4;
 
   final List<Widget> _pages = [
     const DashBoardPage(), // Replace with your dashboard content widget
+    const JournalPage(),
+    const ResourcesPage(),
+    const FeedPage(),
+
     const NotificationContent(),
-    const ProfilePage()
   ];
 
   @override
@@ -28,8 +33,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-        appBar: loggedAppBar(() => ()),
+        appBar: loggedAppBar(() {}, "NOTIFICATIONS"),
         drawer: AppDrawer(),
+        backgroundColor: secondaryColor,
         bottomNavigationBar: CustomBottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: (index) {
@@ -40,9 +46,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
         ),
         body: Column(
           children: [
-            Expanded(
-              child: _pages[_currentIndex], // Display the selected page
-            ),
+
+              _pages[_currentIndex], // Display the selected page
+
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 30),
               child: Column(
@@ -62,7 +68,7 @@ class NotificationContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   return const Center(
+    return const Center(
         child: Text(
       "Notifications",
       style: TextStyle(fontSize: 20, color: primaryColor),

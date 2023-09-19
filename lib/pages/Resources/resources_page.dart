@@ -5,23 +5,29 @@ import '../../components/navigation/app_drawer.dart';
 import '../../components/navigation/bottom_navbar.dart';
 import '../../utils/colours.dart';
 import '../DashBoard/dash_board_page.dart';
+import '../Feed/feed_page.dart';
+import '../Journal/journal_page.dart';
 import '../Notifications/notifications_page.dart';
+import '../Profile/profile_page.dart';
 
 
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+
+class ResourcesPage extends StatefulWidget {
+  const ResourcesPage({Key? key}) : super(key: key);
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ResourcesPage> createState() => _ResourcesPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ResourcesPageState extends State<ResourcesPage> {
   int _currentIndex = 2;
 
   final List<Widget> _pages = [
     const DashBoardPage(),
+    const JournalPage(), // Replace with your dashboard content widget
+    const ResourcesContent(),
+    const FeedPage(),
     const NotificationsPage(),
-    const ProfileContent(),
   ];
 
   @override
@@ -29,9 +35,9 @@ class _ProfilePageState extends State<ProfilePage> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-       appBar: loggedAppBar(() {}, "PROFILE"),
+        appBar: loggedAppBar(() {}, "ResourcesPage"),
+        backgroundColor: secondaryColor,
         drawer: AppDrawer(),
-         backgroundColor: secondaryColor,
         bottomNavigationBar: CustomBottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: (index) {
@@ -57,14 +63,15 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-class ProfileContent extends StatelessWidget {
-  const ProfileContent({super.key});
+class ResourcesContent extends StatelessWidget {
+  const ResourcesContent({super.key});
 
   @override
   Widget build(BuildContext context) {
+
     return const Center(
         child: Text(
-      "Profile",
+      "ResourcesPage",
       style: TextStyle(fontSize: 30, color: primaryColor),
     ));
   }

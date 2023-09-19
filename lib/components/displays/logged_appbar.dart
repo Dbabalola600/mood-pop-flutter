@@ -4,33 +4,37 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../utils/colours.dart';
 
-AppBar loggedAppBar(Function() alertButtonHandler) {
+AppBar loggedAppBar(Function() alertButtonHandler, String appBarTitle) {
   return AppBar(
     elevation: 0,
-    backgroundColor: whiteColor,
+    backgroundColor: secondaryColor,
     toolbarHeight: 80,
+    centerTitle: true,
+    title: Text(
+      appBarTitle,
+      style: TextStyle(
+          color: primaryColor, fontSize: 18, fontWeight: FontWeight.bold),
+    ),
     leading: Padding(
       padding: const EdgeInsets.only(left: 20.0),
       child: Builder(builder: (context) {
         return IconButton(
-          icon: SizedBox(
-            height: 15,
-            width: 15,
-            child: SvgPicture.asset(
-              "assets/icons/menuNav.svg",
-              fit: BoxFit.cover,
-            ),
-          ),
+          // icon: SizedBox(
+          //   height: 15,
+          //   width: 15,
+          //   child: SvgPicture.asset(
+          //     "assets/icons/menuNav.svg",
+          //     fit: BoxFit.cover,
+          //   ),
+          // ),
+          icon: const Icon(Icons.person, color: blackColor,),
           onPressed: () => Scaffold.of(context).openDrawer(),
         );
       }),
     ),
     actions: [
       IconButton(
-        icon: SvgPicture.asset(
-          "assets/icons/alertNav.svg",
-          height: 20,
-        ),
+        icon: const Icon(Icons.settings  ,color: blackColor),
         onPressed: alertButtonHandler,
       ),
       const SizedBox(

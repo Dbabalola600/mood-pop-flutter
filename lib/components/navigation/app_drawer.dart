@@ -15,7 +15,9 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: whiteColor,
+      backgroundColor: disabledColor,
+
+
       width: 200,
       child: SingleChildScrollView(
         child: Padding(
@@ -27,9 +29,23 @@ class AppDrawer extends StatelessWidget {
               const Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 80,
+                  ),
+                  Center(
+                    child: Icon(Icons.person, color: primaryColor, size: 80),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: Text("NAME"),
+                  )
+                ],
               ),
               const SizedBox(
-                height: 50,
+                height: 40,
               ),
               Column(
                 children: [
@@ -47,7 +63,48 @@ class AppDrawer extends StatelessWidget {
                     },
                   ),
                   DrawerNavButtons(
-                    name: "Notifications",
+                    name: "New Post",
+                    svgUrl: "",
+                    onClickHandler: () {
+                      Navigator.pop(context); // Close the drawer
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProfilePage(),
+                        ),
+                      );
+                    },
+                  ),
+                  DrawerNavButtons(
+                    name: "New Journal",
+                    svgUrl: "",
+                    onClickHandler: () {
+                      Navigator.pop(context); // Close the drawer
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProfilePage(),
+                        ),
+                      );
+                    },
+                  ),
+                  DrawerNavButtons(
+                    name: "Seek Help",
+                    svgUrl: "",
+                    onClickHandler: () {
+                      Navigator.pop(context); // Close the drawer
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProfilePage(),
+                        ),
+                      );
+                    },
+                  ),
+                 
+                  DrawerNavButtons(
+                    name: "Notification" ,
+                    
                     svgUrl: "",
                     onClickHandler: () {
                       Navigator.pop(context); // Close the drawer
@@ -58,6 +115,26 @@ class AppDrawer extends StatelessWidget {
                         ),
                       );
                     },
+                  ),
+                ],
+              ),
+              const SizedBox(
+                    height: 80,
+                  ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Row(
+                    children: [
+                      DrawerNavButtons(
+                        name: "Logout",
+                        svgUrl: "assets/icons/drawerLogout.svg",
+                        onClickHandler: () => {},
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
                   ),
                 ],
               ),
