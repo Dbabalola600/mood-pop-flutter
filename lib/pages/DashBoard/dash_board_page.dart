@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mood_pop/components/displays/posts_display.dart';
 
 import '../../components/displays/logged_appbar.dart';
 import '../../components/inputs/search_bar.dart';
@@ -35,7 +36,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-        appBar: loggedAppBar(() {}, "DASHBOARD"),
+        appBar: loggedAppBar(() {}, ""),
         backgroundColor: secondaryColor,
         drawer: AppDrawer(),
         bottomNavigationBar: CustomBottomNavigationBar(
@@ -151,17 +152,75 @@ class DashBoardContent extends StatelessWidget {
         const SizedBox(
           height: 15,
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SvgPicture.asset(
-              "assets/Empty/Blankcontent.svg",
-              alignment: Alignment.center,
-              width: 200,
-              height: 300,
-            )
-          ]),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        //   child:
+        //       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        //     SvgPicture.asset(
+        //       "assets/Empty/Blankcontent.svg",
+        //       alignment: Alignment.center,
+        //       width: 200,
+        //       height: 300,
+        //     )
+        //   ]),
+        // ),
+
+        const SizedBox(
+          height: 15,
+        ),
+
+        //make this scroll
+
+        SizedBox(
+          height: 450, // Set the desired maximum height here
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                PostsDisplay(
+                  props: FeedProps(
+                    image: "",
+                    name: "NAME",
+                    date: "date",
+                    content: "content",
+                  ),
+                ),
+              
+                PostsDisplay(
+                  props: FeedProps(
+                    image: "",
+                    name: "NAME",
+                    date: "date",
+                    content: "conoiwwuobuveobvosiponvsiv sinvosivbpsoinv0s soivnsvn0iv0nv winvw0nveivbe9uvbesoinvsvbn9usvnb wonvuuv9bn9uvbe9buvobeve0vb woinvw9vbeu9vovn  wiofw0ubf oinw0unvtent",
+                  ),
+                ),
+              
+                PostsDisplay(
+                  props: FeedProps(
+                    image: "",
+                    name: "NAME",
+                    date: "date",
+                    content: "content",
+                  ),
+                ),
+                PostsDisplay(
+                  props: FeedProps(
+                    image: "",
+                    name: "NAME",
+                    date: "date",
+                    content: "content",
+                  ),
+                ),
+                PostsDisplay(
+                  props: FeedProps(
+                    image: "",
+                    name: "NAME",
+                    date: "date",
+                    content: "content",
+                  ),
+                ),
+              ],
+            ),
+          ),
         )
       ],
     );
