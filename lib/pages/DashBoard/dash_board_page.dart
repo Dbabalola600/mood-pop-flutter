@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:flutter_svg/svg.dart';
 
 import '../../components/displays/logged_appbar.dart';
 import '../../components/inputs/search_bar.dart';
@@ -10,7 +10,7 @@ import '../../utils/colours.dart';
 import '../Feed/feed_page.dart';
 import '../Journal/journal_page.dart';
 import '../Notifications/notifications_page.dart';
-import '../Profile/profile_page.dart';
+
 import '../Resources/resources_page.dart';
 
 class DashBoardPage extends StatefulWidget {
@@ -73,8 +73,8 @@ class DashBoardContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
       children: [
         Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 8.0), // Add horizontal margin
+          padding: const EdgeInsets.symmetric(
+              horizontal: 8.0), // Add horizontal margin
           child: Row(
             children: [
               const Align(
@@ -111,13 +111,57 @@ class DashBoardContent extends StatelessWidget {
             ],
           ),
         ),
-     const  SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Center(
           child: CustomSearchBar(
             onSearch: (query) {},
           ),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+              horizontal: 8.0), // Add horizontal padding
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Your posts",
+                  style: TextStyle(color: primaryColor, fontSize: 18),
+                ),
+              ),
+              const SizedBox(height: 2), // Adjust the value as needed
+              Container(
+                height: 4,
+                width: 120,
+                // color: primaryColor,
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            SvgPicture.asset(
+              "assets/Empty/Blankcontent.svg",
+              alignment: Alignment.center,
+              width: 200,
+              height: 300,
+            )
+          ]),
         )
       ],
     );
