@@ -5,9 +5,9 @@ import '../../utils/colours.dart';
 
 class FeedProps {
   final String? image;
-  final String name;
-  final String date;
-  final String content;
+  final String? name;
+  final String? date;
+  final String? content;
 
   FeedProps({
     this.image,
@@ -15,12 +15,23 @@ class FeedProps {
     required this.date,
     required this.content,
   });
-}
-
-class PostsDisplay extends StatelessWidget {
+}class PostsDisplay extends StatefulWidget {
   final FeedProps props;
 
   PostsDisplay({required this.props});
+
+  @override
+  _PostsDisplayState createState() => _PostsDisplayState();
+}
+
+class _PostsDisplayState extends State<PostsDisplay> {
+  String get name => "";
+  
+  String get date => "";
+  
+  String get content => "";
+
+ 
 
   @override
  Widget build(BuildContext context) {
@@ -62,8 +73,8 @@ class PostsDisplay extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(props.name),
-                      Text(props.date),
+                      Text(name),
+                      Text(date),
                     ],
                   ),
                 ),
@@ -98,7 +109,7 @@ class PostsDisplay extends StatelessWidget {
               padding: const EdgeInsets.all(5),
               child: Center(
                 child: Text(
-                  props.content,
+                content,
                   style: const TextStyle(
                     color: blackColor,
                   ),

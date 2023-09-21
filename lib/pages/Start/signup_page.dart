@@ -1,8 +1,8 @@
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/svg.dart';
+import 'package:mood_pop/requests/auth_request.dart';
 import '../../components/displays/app_button.dart';
 import '../../components/displays/back_appbar.dart';
 import '../../components/inputs/app_textfield.dart';
@@ -10,8 +10,6 @@ import '../../utils/colours.dart';
 import 'package:get/get.dart';
 
 import 'login_page.dart';
-
-
 
 class SingUpPage extends StatefulWidget {
   const SingUpPage({Key? key}) : super(key: key);
@@ -24,16 +22,40 @@ class _SingUpPageState extends State<SingUpPage> {
   final passwordTextController = TextEditingController();
 
   final userNameController = TextEditingController();
-  final confirmPasswordTextController = TextEditingController();
+  final emailTextController = TextEditingController();
 
   // page state
   bool isButtonDisabled = true;
+  bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
+    void userCreateOnClick() async {
+      setState(() {
+        _isLoading = true;
+      });
+
+      var response = await createUserAccount(
+          UserName: userNameController.text,
+          password: passwordTextController.text,
+          email: emailTextController.text);
+      if (response["status"] == 256 || response["status"] == 257) {
+        print("user exists");
+      }
+      if (response["status"] == 200) {
+        Get.to(const LoginPage());
+      } else {
+        print("error");
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+    }
+
     void isTextFieldBlankValidation() {
       if (userNameController.text.isEmpty ||
           passwordTextController.text.isEmpty ||
-          confirmPasswordTextController.text.isEmpty) {
+          emailTextController.text.isEmpty) {
         setState(() {
           isButtonDisabled = true;
         });
@@ -46,7 +68,6 @@ class _SingUpPageState extends State<SingUpPage> {
 
     return Scaffold(
       appBar: backButtonAppbar(() {}, "Create Account", whiteColor),
-
       body: SafeArea(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -79,7 +100,7 @@ class _SingUpPageState extends State<SingUpPage> {
                       height: 30,
                     ),
                     AppTextField(
-                      label: "UserName",
+                      label: "Username",
                       hint: "username",
                       // key: Key(1.toString()),
                       textController: userNameController,
@@ -91,16 +112,16 @@ class _SingUpPageState extends State<SingUpPage> {
                       height: 30,
                     ),
                     AppTextField(
-                      hint: "***************",
-                      label: "Enter Password",
-                      textController: passwordTextController,
+                      hint: "example@email.com",
+                      label: "Enter Email",
+                      textController: emailTextController,
                       onChanged: (text) {
                         isTextFieldBlankValidation();
                       },
-                      hideText: true,
+                      // hideText: true,
                       // validator: ValidationBuilder().minLength(8).build(),
                     ),
-                      const SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                     AppTextField(
@@ -127,9 +148,9 @@ class _SingUpPageState extends State<SingUpPage> {
                   children: [
                     AppButton(
                       text: "Create Account",
-                      onPress: () => {Get.to(const LoginPage())},
-                       buttonColour: primaryColor,
-                      // isDisabled: isButtonDisabled,
+                      onPress: userCreateOnClick,
+                      buttonColour: primaryColor,
+                      isDisabled: isButtonDisabled,
                     ),
                     const SizedBox(
                       height: 20,

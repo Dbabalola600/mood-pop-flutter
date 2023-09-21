@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 
+
 import '../../components/displays/Buttons/oval_button.dart';
 import '../../components/displays/feed_display.dart';
 import '../../components/displays/logged_appbar.dart';
@@ -14,7 +15,9 @@ import '../DashBoard/dash_board_page.dart';
 import '../Journal/journal_page.dart';
 import '../Notifications/notifications_page.dart';
 
+import '../Post/new_post.dart';
 import '../Resources/resources_page.dart';
+import '../Users/user_page.dart';
 
 class FeedPage extends StatefulWidget {
   const FeedPage({Key? key}) : super(key: key);
@@ -88,13 +91,13 @@ class FeedContent extends StatelessWidget {
             children: [
               ovalButton(
                   name: "New post",
-                  onTap: () => Get.to(const ()),
+                  onTap: () => Get.to(const NewPostPage ()),
                   svgUrlString: "",
                   icon: const Icon(Icons.note_add)),
               const Spacer(),
               ovalButton(
                   name: "View Friends",
-                  onTap: () => Get.to(const ()),
+                  onTap: () => Get.to(const UsersPage ()),
                   svgUrlString: "",
                   icon: const Icon(Icons.people_alt)),
             ],

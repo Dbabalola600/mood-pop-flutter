@@ -5,10 +5,14 @@ import 'package:get/get.dart';
 
 
 
+
+
 import '../../pages/Journal/write_journal.dart';
-import '../../pages/Notifications/notifications_page.dart';
+
+import '../../pages/Post/new_post.dart';
 import '../../pages/Profile/profile_page.dart';
 import '../../pages/Start/login_page.dart';
+import '../../pages/Users/user_page.dart';
 import '../../utils/colours.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -76,7 +80,7 @@ class AppDrawer extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProfilePage(),
+                          builder: (context) => const NewPostPage(),
                         ),
                       );
                     },
@@ -119,7 +123,7 @@ class AppDrawer extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const NotificationsPage(),
+                          builder: (context) => const UsersPage(),
                         ),
                       );
                     },

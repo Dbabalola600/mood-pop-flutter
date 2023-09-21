@@ -5,7 +5,7 @@ import '../../pages/DashBoard/dash_board_page.dart';
 import '../../pages/Feed/feed_page.dart';
 import '../../pages/Journal/journal_page.dart';
 import '../../pages/Notifications/notifications_page.dart';
-import '../../pages/Profile/profile_page.dart';
+
 import '../../pages/Resources/resources_page.dart';
 import '../../utils/colours.dart';
 

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/displays/app_button.dart';
@@ -40,9 +39,12 @@ class _LoginPageState extends State<LoginPage> {
 
       if (response["status"] == 200) {
         var userId = response["data"]["_id"];
+        var email = response["data"]["email"];
+        var username = response["data"]["UserName"];
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("userId", userId);
-
+  prefs.setString("email", email);
+    prefs.setString("username", username);
         // print(prefs.getString("userId"));
 
         Get.to(const DashBoardPage());
@@ -123,17 +125,16 @@ class _LoginPageState extends State<LoginPage> {
                     RichText(
                       text: TextSpan(
                         children: <TextSpan>[
-                          
                           TextSpan(
                             text: "Forgot Password?",
                             style: const TextStyle(color: primaryColor),
                             recognizer: TapGestureRecognizer()
-                              ..onTap = () => Get.to(const ForgotPasswordPage()),
+                              ..onTap =
+                                  () => Get.to(const ForgotPasswordPage()),
                           ),
                         ],
                       ),
                     ),
-                    
                     const SizedBox(
                       height: 40,
                     )
@@ -145,10 +146,10 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     AppButton(
                       text: "Sign In",
-                      // onPress: userLoginOnClick,
+                      onPress: userLoginOnClick,
                       buttonColour: primaryColor,
-                      onPress: () => Get.to(const DashBoardPage()),
-                      // isDisabled: isButtonDisabled,
+                      // onPress: () => Get.to(const DashBoardPage()),
+                      isDisabled: isButtonDisabled,
                     ),
                     const SizedBox(
                       height: 20,
