@@ -101,10 +101,25 @@ class UserIn {
   });
 }
 
+class Posts {
+  final String userId;
+  final String post;
+  final String category;
+  final String date;
+
+  Posts({
+    required this.userId,
+    required this.post,
+    required this.category,
+    required this.date,
+  });
+}
+
 class DashBoardContentState extends State<DashBoardContent> {
   bool _isLoading = false;
   String? username = "user";
   UserIn? user;
+  List<Posts> postList = [];
 
   List<Map<String, String>> postData = [];
   @override
@@ -126,29 +141,29 @@ class DashBoardContentState extends State<DashBoardContent> {
     setState(() {
       _isLoading = true;
     });
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userId = prefs.getString("userId") ?? "";
-    // Assuming that getUserposts returns a JSON array as a string
-    var response = await getUserposts(userId);
-    //  print(response["data"]);
+    var response = await getUserposts(prefs.getString("userId"));
+    // print(response);
+    if (response != null) {
+      var postData = response;
+      // print("here"+postData);
+      postList = (postData as List).map((post) {
+        return Posts(
+          userId: post["userId"],
+          post: post["post"],
+          category: post["category"],
+          date: post["date"],
+        );
+      }).toList();
 
-    List<dynamic> postData = response["data"];
-
-    List<Widget> postWidgets = postData.map((post) {
-      // Replace these placeholders with actual data from your JSON structure
-      String content = post["category"];
-      String date = post["date"];
-      String name = post["post"];
-      // String image = username?? "";
-
-      return PostsDisplay(
-        props: FeedProps(content: content, date: date, name: name),
-      );
-    }).toList();
-
+      print("Post list contents: " + postList[0].category.toString());
+    }
     setState(() {
       _isLoading = false;
     });
+
+    // return jsonDecode(response);
   }
 
   @override
@@ -250,27 +265,40 @@ class DashBoardContentState extends State<DashBoardContent> {
           //   ),
           // ),
 
+          // Your existing code here
+
+     Text(postList[0].category),
+          PostsDisplay(
+            props: FeedProps(
+              content: postList[1].category,
+              date: postList[1].date,
+              name: username ?? "user",
+            ),
+          ),
+
+
+
+
           
-          _isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              :   ListView(
-  children: postData.map((post) {
-    return SizedBox(
-      height: 100, // Replace with the actual height you want
-      child: PostsDisplay(
-        props: FeedProps(
-          content: post["category"] ?? "",
-          date: post["date"] ?? "",
-          name: post["post"] ?? "",
+          // ListView.builder(
+          //   itemCount: postList.length,
+          //   itemBuilder: (context, index) {
+          //     final info = postList[index];
 
-        ),
-      ),
-    );
-  }).toList(),
-)
-
+          //     return SizedBox(
+          //       width: 10, // Set width as needed
+          //       height: 10,
+          //       // Add styling here if needed
+          //       child: PostsDisplay(
+          //         props: FeedProps(
+          //           content: info.category,
+          //           date: info.date,
+          //           name: username ?? "user",
+          //         ),
+          //       ),
+          //     );
+          //   },
+          // )
         ],
       ),
     );

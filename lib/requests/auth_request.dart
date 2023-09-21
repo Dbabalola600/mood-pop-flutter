@@ -98,7 +98,7 @@ Future getUserposts(userId) async {
 
   if (response.statusCode == 200) {
     final data = json.decode(response.body);
-    return data;
+    return data["data"];
   } else if (response.statusCode == 401) {
     throw Exception("Unauthorized: Invalid credentials");
   } else {
