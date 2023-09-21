@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -54,8 +56,12 @@ class _DashBoardPageState extends State<DashBoardPage> {
         body: Column(
           children: [
             Expanded(
-              child: SingleChildScrollView(
-                child: _pages[_currentIndex], // Display the selected page
+              child: ListView.builder(
+                itemCount:
+                    1, // Since you have a single page, set itemCount to 1
+                itemBuilder: (context, index) {
+                  return _pages[_currentIndex]; // Display the selected page
+                },
               ),
             ),
             const Padding(
@@ -156,8 +162,6 @@ class DashBoardContentState extends State<DashBoardContent> {
           date: post["date"],
         );
       }).toList();
-
-      print("Post list contents: " + postList[0].category.toString());
     }
     setState(() {
       _isLoading = false;
@@ -170,137 +174,144 @@ class DashBoardContentState extends State<DashBoardContent> {
   Widget build(BuildContext context) {
     String textToCopy = "This is the text to be copied";
 
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15.0),
-            child: Row(
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    //  user?.UserName ?? 'User',
-                    username ?? "user",
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: primaryColor,
-                    ),
+    return Column(children: [
+      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15.0),
+          child: Row(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  //  user?.UserName ?? 'User',
+                  username ?? "user",
+                  style: const TextStyle(
+                    fontSize: 20,
+                    color: primaryColor,
                   ),
                 ),
-                const Spacer(),
-                GestureDetector(
-                  onTap: () {
-                    Clipboard.setData(ClipboardData(text: textToCopy));
-                  },
-                  child: const Row(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Share Profile",
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: primaryColor,
-                          ),
+              ),
+              const Spacer(),
+              GestureDetector(
+                onTap: () {
+                  Clipboard.setData(ClipboardData(text: textToCopy));
+                },
+                child: const Row(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Share Profile",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: primaryColor,
                         ),
                       ),
-                      Icon(
-                        Icons.share,
-                        color: primaryColor,
-                        size: 12,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Center(
-            child: CustomSearchBar(
-              onSearch: (query) {},
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Your posts",
-                    style: TextStyle(color: primaryColor, fontSize: 18),
-                  ),
+                    ),
+                    Icon(
+                      Icons.share,
+                      color: primaryColor,
+                      size: 12,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 2),
-                Container(
-                  height: 4,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    color: primaryColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+              )
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Center(
+          child: CustomSearchBar(
+            onSearch: (query) {},
+          ),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Your posts",
+                  style: TextStyle(color: primaryColor, fontSize: 18),
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 2),
+              Container(
+                height: 4,
+                width: 120,
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(
-            height: 15,
-          ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          //   child: SvgPicture.asset(
-          //     "assets/Empty/Blankcontent.svg",
-          //     alignment: Alignment.center,
-          //     width: 200,
-          //     height: 300,
-          //   ),
-          // ),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        //   child: SvgPicture.asset(
+        //     "assets/Empty/Blankcontent.svg",
+        //     alignment: Alignment.center,
+        //     width: 200,
+        //     height: 300,
+        //   ),
+        // ),
 
-          // Your existing code here
+        // Your existing code here
 
-     Text(postList[0].category),
-          PostsDisplay(
-            props: FeedProps(
-              content: postList[1].category,
-              date: postList[1].date,
-              name: username ?? "user",
-            ),
-          ),
+        // ListView.builder(
+        //   itemCount: postList.length,
+        //   shrinkWrap: true,
+        //   itemBuilder: (context, int index) {
+        //     final info = postList[index];
 
+        //     return SizedBox(
+        //       // width: 300, // Set width as needed
+        //       // height: 300,
+        //       // Add styling here if needed
+        //       child: PostsDisplay(
+        //         props: FeedProps(
+        //           content: info.category,
+        //           date: info.date,
+        //           name: username ?? "user",
+        //         ),
+        //       ),
+        //     );
+        //   },
+        // ),
 
+        ListView.builder(
+          itemCount: postList.length,
+          shrinkWrap: true,
+          itemBuilder: (context, int index) {
+            final info = postList[index];
 
-
-          
-          // ListView.builder(
-          //   itemCount: postList.length,
-          //   itemBuilder: (context, index) {
-          //     final info = postList[index];
-
-          //     return SizedBox(
-          //       width: 10, // Set width as needed
-          //       height: 10,
-          //       // Add styling here if needed
-          //       child: PostsDisplay(
-          //         props: FeedProps(
-          //           content: info.category,
-          //           date: info.date,
-          //           name: username ?? "user",
-          //         ),
-          //       ),
-          //     );
-          //   },
-          // )
-        ],
-      ),
-    );
+            return SizedBox(
+              // Set width and height or other styling as needed
+              // width: 300,
+              // height: 300,
+              
+              child: PostsDisplay(
+                props: FeedProps(
+                  content: info.category,
+                  date: info.date,
+                  name: username ?? "user",
+                ),
+              ),
+            );
+          },
+        ),
+      ]),
+    ]);
   }
 }
