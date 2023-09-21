@@ -51,6 +51,7 @@ class HomePage extends StatelessWidget {
                 height: 2,
               ),
               AppButton(
+                 buttonColour: primaryColor,
                   text: "Login", onPress: () => {Get.to(const LoginPage())}),
               const SizedBox(
                 height: 15,
@@ -65,7 +66,7 @@ class HomePage extends StatelessWidget {
                         text: "Sign Up",
                         style: const TextStyle(
                           fontWeight: FontWeight.w400,
-                          color: blackColor,
+                          color: primaryColor,
                           fontSize: 14,
                         ),
                         recognizer: TapGestureRecognizer()

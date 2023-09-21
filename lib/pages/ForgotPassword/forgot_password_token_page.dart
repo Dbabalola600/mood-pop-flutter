@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+
 import '../../components/displays/app_button.dart';
 import '../../components/displays/back_appbar.dart';
 import '../../components/inputs/app_textfield.dart';
 import '../../components/navigation/app_drawer.dart';
 
 import '../../utils/colours.dart';
-import 'forgot_password_token_page.dart';
+import 'reset_password_page.dart';
 
-class ForgotPasswordPage extends StatefulWidget {
-  const ForgotPasswordPage({Key? key}) : super(key: key);
+class ForgotPasswordTokenPage extends StatefulWidget {
+  const ForgotPasswordTokenPage({Key? key}) : super(key: key);
   @override
-  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
+  State<ForgotPasswordTokenPage> createState() =>
+      _ForgotPasswordTokenPageState();
 }
 
-class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  final emailController = TextEditingController();
+class _ForgotPasswordTokenPageState extends State<ForgotPasswordTokenPage> {
+  final passwordController = TextEditingController();
   bool isButtonDisabled = true;
 
   @override
   Widget build(BuildContext context) {
     void isTextFieldBlankValidation() {
-      if (emailController.text.isEmpty) {
+      if (passwordController.text.isEmpty) {
         setState(() {
           isButtonDisabled = true;
         });
@@ -36,7 +38,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-        appBar: backButtonAppbar(() {}, "Forgot Password", secondaryColor),
+        appBar:
+            backButtonAppbar(() {}, "Forgot Password token", secondaryColor),
         backgroundColor: secondaryColor,
         drawer: AppDrawer(),
         body: Column(
@@ -48,7 +51,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
-                    "Enter Email address associated with your account",
+                    "Enter token sent to your Email address ",
                     style: TextStyle(
                       color: greyColor,
                       fontSize: 17,
@@ -59,11 +62,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     height: 40,
                   ),
                   AppTextField(
-                    label: "Email",
-                    hint: "Email",
-                    textInputType: TextInputType.emailAddress,
+                    label: "Token",
+                    hint: "Token",
+                    // textInputType: TextInputType.emailAddress,
                     // key: Key(1.toString()),
-                    textController: emailController,
+                    textController: passwordController,
                     onChanged: (text) {
                       isTextFieldBlankValidation();
                     },
@@ -79,7 +82,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                          buttonColour: primaryColor,
                         text: "Proceed",
                         onPress: () =>
-                            {Get.to(const ForgotPasswordTokenPage())},
+                            {Get.to(const ResetPasswordPage())},
                         // isDisabled: isButtonDisabled,
                       ),
                       const SizedBox(

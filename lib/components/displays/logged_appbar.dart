@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
+
+import '../../pages/Settings/settings_page.dart';
 import '../../utils/colours.dart';
 
 AppBar loggedAppBar(Function() alertButtonHandler, String appBarTitle) {
@@ -35,7 +38,7 @@ AppBar loggedAppBar(Function() alertButtonHandler, String appBarTitle) {
     actions: [
       IconButton(
         icon: const Icon(Icons.settings  ,color: blackColor),
-        onPressed: alertButtonHandler,
+        onPressed:()=> Get.to(const SettingsPage()),
       ),
       const SizedBox(
         width: 18,

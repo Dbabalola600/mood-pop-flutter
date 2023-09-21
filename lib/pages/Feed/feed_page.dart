@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
+
+import '../../components/displays/Buttons/oval_button.dart';
+import '../../components/displays/feed_display.dart';
 import '../../components/displays/logged_appbar.dart';
+
 import '../../components/navigation/app_drawer.dart';
 import '../../components/navigation/bottom_navbar.dart';
 import '../../utils/colours.dart';
 import '../DashBoard/dash_board_page.dart';
 import '../Journal/journal_page.dart';
 import '../Notifications/notifications_page.dart';
-import '../Profile/profile_page.dart';
+
 import '../Resources/resources_page.dart';
 
 class FeedPage extends StatefulWidget {
@@ -45,7 +51,11 @@ class _FeedPageState extends State<FeedPage> {
         ),
         body: Column(
           children: [
-            _pages[_currentIndex], // Display the selected page
+            Expanded(
+              child: SingleChildScrollView(
+                child: _pages[_currentIndex], // Display the selected page
+              ),
+            ), // Display the selected page
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 30),
               child: Column(
@@ -65,10 +75,76 @@ class FeedContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-        child: Text(
-      "Feed",
-      style: TextStyle(fontSize: 30, color: primaryColor),
+    return SingleChildScrollView(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(
+          height: 20,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            children: [
+              ovalButton(
+                  name: "New post",
+                  onTap: () => Get.to(const ()),
+                  svgUrlString: "",
+                  icon: const Icon(Icons.note_add)),
+              const Spacer(),
+              ovalButton(
+                  name: "View Friends",
+                  onTap: () => Get.to(const ()),
+                  svgUrlString: "",
+                  icon: const Icon(Icons.people_alt)),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Your Feed",
+                  style: TextStyle(color: primaryColor, fontSize: 18),
+                ),
+              ),
+              const SizedBox(height: 2),
+              Container(
+                height: 4,
+                width: 120,
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: SvgPicture.asset(
+            "assets/Empty/BlankFeed.svg",
+            alignment: Alignment.center,
+            width: 100,
+            height: 300,
+          ),
+        ),
+
+        FeedDisplay(props: FeedProps(name: "name", date: "date", content: "content")),
+         FeedDisplay(props: FeedProps(name: "name", date: "date", content: "content")),
+             FeedDisplay(props: FeedProps(name: "name", date: "date", content: "content")),
+                     FeedDisplay(props: FeedProps(name: "name", date: "date", content: "content")),
+      ],
     ));
   }
 }

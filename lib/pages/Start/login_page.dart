@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/displays/app_button.dart';
@@ -11,6 +12,7 @@ import '../../components/inputs/app_textfield.dart';
 import '../../requests/auth_request.dart';
 import '../../utils/colours.dart';
 import '../DashBoard/dash_board_page.dart';
+import '../ForgotPassword/forgot_password_page.dart';
 import 'signup_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -65,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     return Scaffold(
-      appBar: backButtonAppbar(() {}, "Welcome Back"),
+      appBar: backButtonAppbar(() {}, "Welcome Back", whiteColor),
       body: SafeArea(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -119,10 +121,19 @@ class _LoginPageState extends State<LoginPage> {
                       height: 20,
                     ),
                     RichText(
-                      text: const TextSpan(
-                          text: "Forgot Password?",
-                          style: TextStyle(color: blackColor)),
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          
+                          TextSpan(
+                            text: "Forgot Password?",
+                            style: const TextStyle(color: primaryColor),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () => Get.to(const ForgotPasswordPage()),
+                          ),
+                        ],
+                      ),
                     ),
+                    
                     const SizedBox(
                       height: 40,
                     )
@@ -135,7 +146,8 @@ class _LoginPageState extends State<LoginPage> {
                     AppButton(
                       text: "Sign In",
                       // onPress: userLoginOnClick,
-                      onPress: ()=> Get.to(const DashBoardPage()),
+                      buttonColour: primaryColor,
+                      onPress: () => Get.to(const DashBoardPage()),
                       // isDisabled: isButtonDisabled,
                     ),
                     const SizedBox(
@@ -150,8 +162,8 @@ class _LoginPageState extends State<LoginPage> {
                               style: TextStyle(color: blackColor),
                             ),
                             TextSpan(
-                              text: "SignUp",
-                              style: const TextStyle(color: successColor),
+                              text: "Sign Up",
+                              style: const TextStyle(color: primaryColor),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () => Get.to(const SingUpPage()),
                             ),

@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../components/displays/logged_appbar.dart';
+import '../../components/displays/app_button.dart';
+import '../../components/displays/back_appbar.dart';
 import '../../components/navigation/app_drawer.dart';
-import '../../components/navigation/bottom_navbar.dart';
+
 import '../../utils/colours.dart';
-import '../Notifications/notifications_page.dart';
-import '../Profile/profile_page.dart';
-
-
-
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -17,57 +13,78 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  int _currentIndex = 0;
-
-  final List<Widget> _pages = [
-    const DashBoardContent(), // Replace with your dashboard content widget
-    const NotificationsPage(),
-    const ProfilePage()
-  ];
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-        appBar: loggedAppBar(() {}, "SettingsPage"),
+        appBar: backButtonAppbar(() {}, " ", secondaryColor),
         backgroundColor: secondaryColor,
         drawer: AppDrawer(),
-        bottomNavigationBar: CustomBottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-        ),
-        body: Column(
-          children: [
-            _pages[_currentIndex], // Display the selected page
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            reverse: true,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-              ),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Center(
+                          child: Text(
+                            "Settings",
+                            style: TextStyle(
+                                color: primaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        AppButton(
+                            text: "Update Username",
+                            onPress: () => {},
+                            buttonColour: disabledColor),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        AppButton(
+                            text: "Update Password",
+                            onPress: () => {},
+                            buttonColour: disabledColor),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        AppButton(
+                            text: "Update Email",
+                            onPress: () => {},
+                            buttonColour: disabledColor),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        AppButton(
+                            text: "Update Profile Picture",
+                            onPress: () => {},
+                            buttonColour: disabledColor),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        AppButton(
+                            text: "Contact Support",
+                            onPress: () => {},
+                            buttonColour: disabledColor),
+                      ],
+                    )
+                  ]),
             ),
-          ],
+          ),
         ),
       ),
     );
-  }
-}
-
-class DashBoardContent extends StatelessWidget {
-  const DashBoardContent({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-
-    return const Center(
-        child: Text(
-      "SettingsPage",
-      style: TextStyle(fontSize: 30, color: primaryColor),
-    ));
   }
 }

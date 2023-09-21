@@ -17,10 +17,10 @@ class FeedProps {
   });
 }
 
-class PostsDisplay extends StatelessWidget {
+class FeedDisplay extends StatelessWidget {
   final FeedProps props;
 
-  PostsDisplay({required this.props});
+  FeedDisplay({required this.props});
 
   @override
  Widget build(BuildContext context) {
@@ -67,21 +67,7 @@ class PostsDisplay extends StatelessWidget {
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.topRight, // Align the "Delete" icon to the top right
-                    child: GestureDetector(
-                      onTap: () {
-                        // Handle the press event
-                      },
-                      child: const Icon(
-                        Icons.delete,
-                        size: 20,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
+                
               ],
             ),
           ),

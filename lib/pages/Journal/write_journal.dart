@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../components/displays/logged_appbar.dart';
-import '../../components/navigation/app_drawer.dart';
-import '../../components/navigation/bottom_navbar.dart';
+import '../../components/displays/app_button.dart';
+
+import '../../components/displays/back_appbar.dart';
+import '../../components/inputs/app_textfield.dart';
+import '../../components/inputs/large_app_textfield.dart';
 import '../../utils/colours.dart';
-import '../Notifications/notifications_page.dart';
-import '../Profile/profile_page.dart';
+import 'journal_page.dart';
 
 class WriteJournalPage extends StatefulWidget {
   const WriteJournalPage({Key? key}) : super(key: key);
@@ -14,56 +16,99 @@ class WriteJournalPage extends StatefulWidget {
 }
 
 class _WriteJournalPageState extends State<WriteJournalPage> {
-  int _currentIndex = 0;
+  final titleTextController = TextEditingController();
+  final contentTextController = TextEditingController();
 
-  final List<Widget> _pages = [
-    const DashBoardContent(), // Replace with your dashboard content widget
-    const NotificationsPage(),
-    const ProfilePage()
-  ];
+  // page state
+  bool isButtonDisabled = true;
 
   @override
   Widget build(BuildContext context) {
+    void isTextFieldBlankValidation() {
+      if (titleTextController.text.isEmpty ||
+          contentTextController.text.isEmpty) {
+        setState(() {
+          isButtonDisabled = true;
+        });
+      } else {
+        setState(() {
+          isButtonDisabled = false;
+        });
+      }
+    }
+
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-        appBar: loggedAppBar(() {}, "WriteJournalPage"),
+        appBar: backButtonAppbar(() {}, "Write Journal", secondaryColor),
         backgroundColor: secondaryColor,
-        drawer: AppDrawer(),
-        bottomNavigationBar: CustomBottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-        ),
-        body: Column(
-          children: [
-            _pages[_currentIndex], // Display the selected page
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            reverse: true,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      AppTextField(
+                        label: "Title",
+                        hint: "title",
+                        // key: Key(1.toString()),
+                        textController: titleTextController,
+                        onChanged: (text) {
+                          isTextFieldBlankValidation();
+                        },
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      LargeAppTextField(
+                        hint: "What's up?",
+                        label: "Content",
+                        textController: contentTextController,
+                        onChanged: (text) {
+                          isTextFieldBlankValidation();
+                        },
+
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                    
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      AppButton(
+                         buttonColour: primaryColor,
+                        text: "Create Note",
+                        onPress: () => Get.to(const JournalPage()),
+                        // isDisabled: isButtonDisabled,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
-  }
-}
-
-class DashBoardContent extends StatelessWidget {
-  const DashBoardContent({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-        child: Text(
-      "WriteJournalPage",
-      style: TextStyle(fontSize: 30, color: primaryColor),
-    ));
   }
 }

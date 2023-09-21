@@ -155,6 +155,16 @@ class DashBoardContent extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: SvgPicture.asset(
+              "assets/Empty/Blankcontent.svg",
+              alignment: Alignment.center,
+              width: 200,
+              height: 300,
+            ),
+          ),
+
           // Rest of your content here...
           PostsDisplay(
             props: FeedProps(

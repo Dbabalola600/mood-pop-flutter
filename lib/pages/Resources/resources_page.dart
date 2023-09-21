@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mood_pop/components/displays/app_button.dart';
 
 import '../../components/displays/logged_appbar.dart';
 import '../../components/navigation/app_drawer.dart';
@@ -8,10 +9,6 @@ import '../DashBoard/dash_board_page.dart';
 import '../Feed/feed_page.dart';
 import '../Journal/journal_page.dart';
 import '../Notifications/notifications_page.dart';
-import '../Profile/profile_page.dart';
-
-
-
 
 class ResourcesPage extends StatefulWidget {
   const ResourcesPage({Key? key}) : super(key: key);
@@ -48,7 +45,11 @@ class _ResourcesPageState extends State<ResourcesPage> {
         ),
         body: Column(
           children: [
-            _pages[_currentIndex], // Display the selected page
+            Expanded(
+              child: SingleChildScrollView(
+                child: _pages[_currentIndex], // Display the selected page
+              ),
+            ), // Display the selected page
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 30),
               child: Column(
@@ -68,11 +69,35 @@ class ResourcesContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return const Center(
-        child: Text(
-      "ResourcesPage",
-      style: TextStyle(fontSize: 30, color: primaryColor),
-    ));
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 80,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Column(children: [
+              AppButton(
+                iconic: Icons.handshake,
+                text: "Seek Help",
+                onPress: () => {},
+                buttonColour: disabledColor,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              AppButton(
+                iconic: Icons.menu_book,
+                text: "Resource Materials",
+                onPress: () => {},
+                buttonColour: disabledColor,
+              ),
+            ]),
+          ),
+        ],
+      ),
+    );
   }
 }

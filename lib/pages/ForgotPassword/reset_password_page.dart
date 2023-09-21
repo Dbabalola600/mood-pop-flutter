@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+
 import '../../components/displays/app_button.dart';
 import '../../components/displays/back_appbar.dart';
 import '../../components/inputs/app_textfield.dart';
 import '../../components/navigation/app_drawer.dart';
-
+import '../../components/navigation/bottom_navbar.dart';
 import '../../utils/colours.dart';
-import 'forgot_password_token_page.dart';
+import '../Start/login_page.dart';
 
-class ForgotPasswordPage extends StatefulWidget {
-  const ForgotPasswordPage({Key? key}) : super(key: key);
+
+class ResetPasswordPage extends StatefulWidget {
+  const ResetPasswordPage({Key? key}) : super(key: key);
   @override
-  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
+  State<ResetPasswordPage> createState() => _ResetPasswordPageState();
 }
 
-class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  final emailController = TextEditingController();
+class _ResetPasswordPageState extends State<ResetPasswordPage> {
+    final passwordController = TextEditingController();
   bool isButtonDisabled = true;
-
   @override
   Widget build(BuildContext context) {
-    void isTextFieldBlankValidation() {
-      if (emailController.text.isEmpty) {
+     void isTextFieldBlankValidation() {
+      if (passwordController.text.isEmpty) {
         setState(() {
           isButtonDisabled = true;
         });
@@ -32,11 +33,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         });
       }
     }
-
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-        appBar: backButtonAppbar(() {}, "Forgot Password", secondaryColor),
+        appBar: backButtonAppbar(() {}, "Reset password", secondaryColor),
         backgroundColor: secondaryColor,
         drawer: AppDrawer(),
         body: Column(
@@ -48,7 +48,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
-                    "Enter Email address associated with your account",
+                    "Enter new account password",
                     style: TextStyle(
                       color: greyColor,
                       fontSize: 17,
@@ -59,11 +59,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     height: 40,
                   ),
                   AppTextField(
-                    label: "Email",
-                    hint: "Email",
-                    textInputType: TextInputType.emailAddress,
+                    label: "New Password",
+                    hint: "New Password",
+                    // textInputType: TextInputType.emailAddress,
                     // key: Key(1.toString()),
-                    textController: emailController,
+                    textController: passwordController,
                     onChanged: (text) {
                       isTextFieldBlankValidation();
                     },
@@ -79,7 +79,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                          buttonColour: primaryColor,
                         text: "Proceed",
                         onPress: () =>
-                            {Get.to(const ForgotPasswordTokenPage())},
+                            {Get.to(const LoginPage())},
                         // isDisabled: isButtonDisabled,
                       ),
                       const SizedBox(

@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+
+
+import '../../pages/Journal/write_journal.dart';
 import '../../pages/Notifications/notifications_page.dart';
 import '../../pages/Profile/profile_page.dart';
+import '../../pages/Start/login_page.dart';
 import '../../utils/colours.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -51,7 +55,8 @@ class AppDrawer extends StatelessWidget {
                 children: [
                   DrawerNavButtons(
                     name: "Profile",
-                    svgUrl: "",
+                    svgUrl:"",
+                    icon:  Icons.person,
                     onClickHandler: () {
                       Navigator.pop(context); // Close the drawer
                       Navigator.push(
@@ -64,6 +69,7 @@ class AppDrawer extends StatelessWidget {
                   ),
                   DrawerNavButtons(
                     name: "New Post",
+                       icon: Icons.note_add,
                     svgUrl: "",
                     onClickHandler: () {
                       Navigator.pop(context); // Close the drawer
@@ -77,19 +83,21 @@ class AppDrawer extends StatelessWidget {
                   ),
                   DrawerNavButtons(
                     name: "New Journal",
+                       icon: Icons.bookmark_add_sharp,
                     svgUrl: "",
                     onClickHandler: () {
                       Navigator.pop(context); // Close the drawer
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProfilePage(),
+                          builder: (context) => const WriteJournalPage(),
                         ),
                       );
                     },
                   ),
                   DrawerNavButtons(
                     name: "Seek Help",
+                       icon: Icons.handshake,
                     svgUrl: "",
                     onClickHandler: () {
                       Navigator.pop(context); // Close the drawer
@@ -103,8 +111,8 @@ class AppDrawer extends StatelessWidget {
                   ),
                  
                   DrawerNavButtons(
-                    name: "Notification" ,
-                    
+                    name: "Friends" ,
+                    icon: Icons.people_alt,
                     svgUrl: "",
                     onClickHandler: () {
                       Navigator.pop(context); // Close the drawer
@@ -127,9 +135,10 @@ class AppDrawer extends StatelessWidget {
                   Row(
                     children: [
                       DrawerNavButtons(
+                        icon:Icons.logout,
                         name: "Logout",
-                        svgUrl: "assets/icons/drawerLogout.svg",
-                        onClickHandler: () => {},
+                        svgUrl: "",
+                        onClickHandler: () => Get.to(const LoginPage()),
                       ),
                     ],
                   ),
@@ -151,11 +160,13 @@ class DrawerNavButtons extends StatelessWidget {
     Key? key,
     required this.name,
     required this.svgUrl,
+    required this.icon,
     required this.onClickHandler,
   }) : super(key: key);
 
   final String name;
   final String svgUrl;
+  final dynamic icon;
   final VoidCallback onClickHandler;
 
   @override
@@ -167,26 +178,20 @@ class DrawerNavButtons extends StatelessWidget {
         child: Ink(
           child: Row(
             children: [
-              name == "Profile"
-                  ? const SizedBox(width: 2)
-                  : const SizedBox(
-                      width: 0,
-                    ),
+            Icon(icon),
               SvgPicture.asset(
                 svgUrl,
               ),
+              // const SizedBox(
+              //   width: 10,
+              // ),
               const SizedBox(
-                width: 10,
-              ),
-              name == "Profile"
-                  ? const SizedBox(width: 3)
-                  : const SizedBox(
-                      width: 0,
+                      width: 10, height: 40,
                     ),
               Text(
                 name,
                 style: const TextStyle(
-                  fontSize: 12,
+                  fontSize: 18,
                 ),
               ),
             ],

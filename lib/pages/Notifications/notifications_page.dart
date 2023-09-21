@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../components/displays/logged_appbar.dart';
+import '../../components/displays/user_notification.dart';
 import '../../components/navigation/app_drawer.dart';
 import '../../components/navigation/bottom_navbar.dart';
 import '../../utils/colours.dart';
@@ -46,9 +47,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
         ),
         body: Column(
           children: [
-
-              _pages[_currentIndex], // Display the selected page
-
+            Expanded(
+              child: SingleChildScrollView(
+                child: _pages[_currentIndex], // Display the selected page
+              ),
+            ), // Display the selected page
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 30),
               child: Column(
@@ -68,10 +71,54 @@ class NotificationContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-        child: Text(
-      "Notifications",
-      style: TextStyle(fontSize: 20, color: primaryColor),
-    ));
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 20,
+          ),
+         const Center(
+            child: Text(
+              "NO NEW NOTIFICATIONS",
+              style: TextStyle(
+                  color: blackColor, fontWeight: FontWeight.w400, fontSize: 20),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                UserNotification(
+                  image: null,
+                  name: "name",
+                  Acceptclicky: () => {},
+                  Declineclicky: () => {},
+                ),
+                UserNotification(
+                  image: null,
+                  name: "name",
+                  Acceptclicky: () => {},
+                  Declineclicky: () => {},
+                ),
+                UserNotification(
+                  image: null,
+                  name: "name",
+                  Acceptclicky: () => {},
+                  Declineclicky: () => {},
+                ),
+                UserNotification(
+                  image: null,
+                  name: "name",
+                  Acceptclicky: () => {},
+                  Declineclicky: () => {},
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

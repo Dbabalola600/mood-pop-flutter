@@ -3,10 +3,10 @@ import '../../utils/colours.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/svg.dart';
 
-AppBar backButtonAppbar(Function(), String appBarTitle) {
+AppBar backButtonAppbar(Function(), String appBarTitle , dynamic cuscolor) {
   return AppBar(
     centerTitle: true,
-    backgroundColor: whiteColor,
+    backgroundColor: cuscolor,
     elevation: 0.0,
     title: Text(
       appBarTitle,
@@ -43,7 +43,7 @@ AppBar backButtonAppbar(Function(), String appBarTitle) {
           width: 20,
         ),
         decoration: BoxDecoration(
-            color: whiteColor, borderRadius: BorderRadius.circular(10)),
+            color: Colors.transparent, borderRadius: BorderRadius.circular(10)),
       ),
     ),
   );

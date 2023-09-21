@@ -45,7 +45,7 @@ class _SingUpPageState extends State<SingUpPage> {
     }
 
     return Scaffold(
-      appBar: backButtonAppbar(() {}, "Create Account"),
+      appBar: backButtonAppbar(() {}, "Create Account", whiteColor),
 
       body: SafeArea(
         child: SingleChildScrollView(
@@ -128,6 +128,7 @@ class _SingUpPageState extends State<SingUpPage> {
                     AppButton(
                       text: "Create Account",
                       onPress: () => {Get.to(const LoginPage())},
+                       buttonColour: primaryColor,
                       // isDisabled: isButtonDisabled,
                     ),
                     const SizedBox(
@@ -143,7 +144,7 @@ class _SingUpPageState extends State<SingUpPage> {
                             ),
                             TextSpan(
                               text: "Login",
-                              style: const TextStyle(color: successColor),
+                              style: const TextStyle(color: primaryColor),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Get.to(const LoginPage());
