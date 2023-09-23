@@ -1,4 +1,4 @@
-import 'dart:ffi';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,14 +10,14 @@ import '../../components/displays/posts_display.dart';
 import '../../components/inputs/search_bar.dart';
 import '../../components/navigation/app_drawer.dart';
 import '../../components/navigation/bottom_navbar.dart';
-import '../../models/user_post.dart';
+
 import '../../requests/auth_request.dart';
 import '../../utils/colours.dart';
 import '../Feed/feed_page.dart';
 import '../Journal/journal_page.dart';
 import '../Notifications/notifications_page.dart';
 
-import 'dart:convert';
+
 import '../Resources/resources_page.dart';
 
 class DashBoardPage extends StatefulWidget {
@@ -78,7 +78,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
   }
 }
 
-//make this whole thing scrollable
+
 
 class DashBoardContent extends StatefulWidget {
   @override
@@ -151,6 +151,7 @@ class DashBoardContentState extends State<DashBoardContent> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var response = await getUserposts(prefs.getString("userId"));
     // print(response);
+
     if (response != null) {
       var postData = response;
       // print("here"+postData);
@@ -168,6 +169,7 @@ class DashBoardContentState extends State<DashBoardContent> {
     });
 
     // return jsonDecode(response);
+    
   }
 
   @override
@@ -257,15 +259,6 @@ class DashBoardContentState extends State<DashBoardContent> {
         const SizedBox(
           height: 15,
         ),
-        // Padding(
-        //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        //   child: SvgPicture.asset(
-        //     "assets/Empty/Blankcontent.svg",
-        //     alignment: Alignment.center,
-        //     width: 200,
-        //     height: 300,
-        //   ),
-        // ),
 
         // Your existing code here
 
@@ -290,26 +283,36 @@ class DashBoardContentState extends State<DashBoardContent> {
         //   },
         // ),
 
-        ListView.builder(
-          itemCount: postList.length,
-          shrinkWrap: true,
-          itemBuilder: (context, int index) {
-            final info = postList[index];
+        Column(
+          children: postList.length.toInt() == 0
+              ? [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: SvgPicture.asset(
+                      "assets/Empty/Blankcontent.svg",
+                      alignment: Alignment.center,
+                      width: 200,
+                      height: 300,
+                    ),
+                  ),
+                ]
+              : [
+                  ListView.builder(
+                    itemCount: postList.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, int index) {
+                      final info = postList[index];
 
-            return SizedBox(
-              // Set width and height or other styling as needed
-              // width: 300,
-              // height: 300,
-              
-              child: PostsDisplay(
-                props: FeedProps(
-                  content: info.category,
-                  date: info.date,
-                  name: username ?? "user",
-                ),
-              ),
-            );
-          },
+                      return PostsDisplay(
+                        props: FeedProps(
+                          content: info.category,
+                          date: info.date,
+                          name: username ?? "user",
+                        ),
+                      );
+                    },
+                  ),
+                ],
         ),
       ]),
     ]);

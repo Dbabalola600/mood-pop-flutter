@@ -132,8 +132,6 @@ Future getfollowingposts(userId) async {
 //  var body = info;
   String uri = "$baseUrl/post/getFollowingPost?userId=$userId";
 
-
-
   var url = Uri.parse(uri);
 
   final response = await http.get(url);
@@ -151,7 +149,7 @@ Future getfollowingposts(userId) async {
 
 //journal
 
-Future createJournal(userId, title, content) async {
+Future createJournal({userId, title, content}) async {
   Map info = {"userId": userId, "title": title, "content": content};
   var body = info;
 
@@ -172,7 +170,6 @@ Future createJournal(userId, title, content) async {
   }
 }
 
-
 Future getJournal(userId) async {
   Map info = {"userId": userId};
   var body = info;
@@ -185,7 +182,7 @@ Future getJournal(userId) async {
 
   if (response.statusCode == 200) {
     final data = json.decode(response.body);
-    return data;
+    return data["data"];
   } else if (response.statusCode == 401) {
     throw Exception("Unauthorized: Invalid credentials");
   } else {
@@ -215,16 +212,15 @@ Future getNote(userId, noteId) async {
   }
 }
 
-
 Future deleteNote(userId, noteId) async {
-  Map info = {"userId": userId , "Nid": noteId};
+  Map info = {"userId": userId, "Nid": noteId};
   var body = info;
 
   String uri = "$baseUrl/journal/DelNote";
 
   var url = Uri.parse(uri);
 
-  final response = await http.post(url, body:body);
+  final response = await http.post(url, body: body);
 
   if (response.statusCode == 200) {
     final data = json.decode(response.body);
@@ -238,7 +234,6 @@ Future deleteNote(userId, noteId) async {
 }
 
 //notifications
-
 
 Future countNotification(userId) async {
   // Map info = {"userId": userId , "Nid": noteId};
@@ -261,19 +256,16 @@ Future countNotification(userId) async {
   }
 }
 
-//requests 
-
-
-
+//requests
 Future getAllRequests(userId) async {
-  Map info = {"userId": userId };
+  Map info = {"userId": userId};
   var body = info;
 
   String uri = "$baseUrl/request/getAll";
 
   var url = Uri.parse(uri);
 
-  final response = await http.post(url, body:body);
+  final response = await http.post(url, body: body);
 
   if (response.statusCode == 200) {
     final data = json.decode(response.body);
@@ -286,16 +278,15 @@ Future getAllRequests(userId) async {
   }
 }
 
-
 Future newRequests(fromId, toId) async {
-  Map info = {"fromId":  fromId, "toId":toId };
+  Map info = {"fromId": fromId, "toId": toId};
   var body = info;
 
   String uri = "$baseUrl/request/newRequest";
 
   var url = Uri.parse(uri);
 
-  final response = await http.post(url, body:body);
+  final response = await http.post(url, body: body);
 
   if (response.statusCode == 200) {
     final data = json.decode(response.body);
@@ -307,8 +298,6 @@ Future newRequests(fromId, toId) async {
         "Failed to make the request. Status code: ${response.statusCode}");
   }
 }
-
-
 
 Future acceptRequests(userId, newFollowId, ReqId) async {
   Map info = {"userId": userId, "newFollowId": newFollowId, "ReqiD": ReqId};
@@ -318,7 +307,7 @@ Future acceptRequests(userId, newFollowId, ReqId) async {
 
   var url = Uri.parse(uri);
 
-  final response = await http.post(url, body:body);
+  final response = await http.post(url, body: body);
 
   if (response.statusCode == 200) {
     final data = json.decode(response.body);
@@ -331,15 +320,9 @@ Future acceptRequests(userId, newFollowId, ReqId) async {
   }
 }
 
-
 //followers
 
-
-
 Future getFollowing(userId) async {
-
-
-
   String uri = "$baseUrl/follow/getFollowing?Id=$userId";
 
   var url = Uri.parse(uri);
@@ -358,9 +341,6 @@ Future getFollowing(userId) async {
 }
 
 Future getFollowers(userId) async {
-
-
-
   String uri = "$baseUrl/follow/getFollowers?Id=$userId";
 
   var url = Uri.parse(uri);
@@ -378,9 +358,6 @@ Future getFollowers(userId) async {
   }
 }
 
-
-
-void main() async {
-  print(await getUserposts(
-      "6503204a1837f590a3b6653a"));
-}
+// void main() async {
+//   print(await getJournal( "650320061837f590a3b6652c" ));
+// }
