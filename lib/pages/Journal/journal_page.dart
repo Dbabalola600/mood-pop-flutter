@@ -145,95 +145,100 @@ class JournalContentState extends State<JournalContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-              children: [
-                ovalButton(
-                    name: "Write journal",
-                    onTap: () => Get.to(const WriteJournalPage()),
-                    svgUrlString: "",
-                    icon: const Icon(Icons.bookmark_add_sharp)),
-                const Spacer(),
-                ovalButton(
-                    name: "Record journal",
-                    onTap: () => Get.to(const RecordJournalPage()),
-                    svgUrlString: "",
-                    icon: const Icon(Icons.record_voice_over)),
-              ],
+    return Column(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 20,
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Your Notes",
-                    style: TextStyle(color: primaryColor, fontSize: 18),
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Container(
-                  height: 4,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    color: primaryColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                children: [
+                  ovalButton(
+                      name: "Write journal",
+                      onTap: () => Get.to(const WriteJournalPage()),
+                      svgUrlString: "",
+                      icon: const Icon(Icons.bookmark_add_sharp)),
+                  const Spacer(),
+                  ovalButton(
+                      name: "Record journal",
+                      onTap: () => Get.to(const RecordJournalPage()),
+                      svgUrlString: "",
+                      icon: const Icon(Icons.record_voice_over)),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-
-          // Text(journalList[0].content),
-          Column(
-            children: journalList.length.toInt() == 0
-                ? [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: SvgPicture.asset(
-                        "assets/Empty/BlankNote.svg",
-                        alignment: Alignment.center,
-                        width: 100,
-                        height: 300,
-                      ),
+            const SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Your Notes",
+                      style: TextStyle(color: primaryColor, fontSize: 18),
                     ),
-                  ]
-                : [
-                    ListView.builder(
+                  ),
+                  const SizedBox(height: 2),
+                  Container(
+                    height: 4,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+
+            // Text(journalList[0].content),
+            Column(
+              children: journalList.length.toInt() == 0
+                  ? [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: SvgPicture.asset(
+                          "assets/Empty/BlankNote.svg",
+                          alignment: Alignment.center,
+                          width: 100,
+                          height: 300,
+                        ),
+                      ),
+                    ]
+                  : [
+                      ListView.builder(
                         itemCount: journalList.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           final info = journalList[index];
                           return JournalDisplay(
                             props: JournalProps(
-                                date: info.date, title: info.title),
+                                date: info.date,
+                                title: info.title,
+                                nId: info.id),
                           );
-                        })
-                  ],
-          ),
+                        },
+                      )
+                    ],
+            ),
 
-          const SizedBox(
-            height: 15,
-          ),
-        ],
-      )
-    ]);
+            const SizedBox(
+              height: 15,
+            ),
+          ],
+        )
+      ],
+    );
   }
 }

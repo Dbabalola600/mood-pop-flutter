@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../pages/DashBoard/dash_board_page.dart';
+import '../../pages/Journal/journal_details.dart';
+
 
 
 class JournalProps {
   final dynamic title;
   final dynamic date;
+  final dynamic nId;
 
   JournalProps({
     required this.title,
     required this.date,
+    required this.nId
   });
 }
 
@@ -22,7 +25,7 @@ class JournalDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap:()=> Get.to(const DashBoardPage()),
+      onTap:()=> Get.to( JournalDetailsPage(props.nId)),
       child: Padding(
         padding: const EdgeInsets.symmetric(
             horizontal: 10), // Add horizontal padding

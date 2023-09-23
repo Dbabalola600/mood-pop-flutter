@@ -26,7 +26,7 @@ class _UsersPageState extends State<UsersPage> {
         body: SafeArea(
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            reverse: true,
+
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(

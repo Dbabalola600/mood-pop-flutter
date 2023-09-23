@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+
 
 import '../../components/displays/app_button.dart';
 import '../../components/displays/back_appbar.dart';
 import '../../components/navigation/app_drawer.dart';
 
 import '../../utils/colours.dart';
+import 'contact_support_page.dart';
+import 'update_avatar_page.dart';
+import 'update_email_page.dart';
+import 'update_password_page.dart';
+import 'update_username_page.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -24,7 +32,6 @@ class _SettingsPageState extends State<SettingsPage> {
         body: SafeArea(
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            reverse: true,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
@@ -48,35 +55,35 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                         AppButton(
                             text: "Update Username",
-                            onPress: () => {},
+                            onPress: () => {Get.to(const UpdateUsernamePage())},
                             buttonColour: disabledColor),
                         const SizedBox(
                           height: 20,
                         ),
                         AppButton(
                             text: "Update Password",
-                            onPress: () => {},
+                            onPress: () => {Get.to(const UpdatePasswordPage())},
                             buttonColour: disabledColor),
                         const SizedBox(
                           height: 20,
                         ),
                         AppButton(
                             text: "Update Email",
-                            onPress: () => {},
+                     onPress: () => {Get.to(const UpdateEmailPage())},
                             buttonColour: disabledColor),
                         const SizedBox(
                           height: 20,
                         ),
                         AppButton(
                             text: "Update Profile Picture",
-                            onPress: () => {},
+                         onPress: () => {Get.to(const UpdateAvatarPage())},
                             buttonColour: disabledColor),
                         const SizedBox(
                           height: 20,
                         ),
                         AppButton(
                             text: "Contact Support",
-                            onPress: () => {},
+                            onPress: () => {Get.to(const ContactSupportPage())},
                             buttonColour: disabledColor),
                       ],
                     )

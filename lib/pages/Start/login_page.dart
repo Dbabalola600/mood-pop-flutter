@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/displays/app_button.dart';
 import '../../components/displays/back_appbar.dart';
+import '../../components/displays/basic_appbar.dart';
 import '../../components/inputs/app_textfield.dart';
 import '../../requests/auth_request.dart';
 import '../../utils/colours.dart';
@@ -33,7 +35,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     void userLoginOnClick() async {
-      _isLoading = true;
+     setState(() {
+        _isLoading = true;
+      });
       var response = await loginUserWithUsernameAndPassword(
           loginIdController.text, passwordTextController.text);
 
@@ -43,8 +47,8 @@ class _LoginPageState extends State<LoginPage> {
         var username = response["data"]["UserName"];
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("userId", userId);
-  prefs.setString("email", email);
-    prefs.setString("username", username);
+        prefs.setString("email", email);
+        prefs.setString("username", username);
         // print(prefs.getString("userId"));
 
         Get.to(const DashBoardPage());
@@ -52,7 +56,9 @@ class _LoginPageState extends State<LoginPage> {
         print("incorrect");
       }
 
-      _isLoading = false;
+     setState(() {
+        _isLoading = false;
+      });
     }
 
     void isTextFieldBlankValidation(String value) {
@@ -69,11 +75,10 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     return Scaffold(
-      appBar: backButtonAppbar(() {}, "Welcome Back", whiteColor),
+      appBar: backButtonAppbar( (){}, "Welcome Back", whiteColor),
       body: SafeArea(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          reverse: true,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Column(
@@ -145,10 +150,10 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     AppButton(
-                      text: "Sign In",
+                      text: _isLoading? "Loading...":"Sign In",
                       onPress: userLoginOnClick,
                       buttonColour: primaryColor,
-                      // onPress: () => Get.to(const DashBoardPage()),
+
                       isDisabled: isButtonDisabled,
                     ),
                     const SizedBox(

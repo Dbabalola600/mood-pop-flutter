@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mood_pop/components/displays/app_button.dart';
+import 'package:get/get.dart';
 
+
+
+
+import '../../components/displays/app_button.dart';
 import '../../components/displays/logged_appbar.dart';
 import '../../components/navigation/app_drawer.dart';
 import '../../components/navigation/bottom_navbar.dart';
@@ -9,6 +13,8 @@ import '../DashBoard/dash_board_page.dart';
 import '../Feed/feed_page.dart';
 import '../Journal/journal_page.dart';
 import '../Notifications/notifications_page.dart';
+import 'resource_material_page.dart';
+import 'seek_help_page.dart';
 
 class ResourcesPage extends StatefulWidget {
   const ResourcesPage({Key? key}) : super(key: key);
@@ -82,7 +88,8 @@ class ResourcesContent extends StatelessWidget {
               AppButton(
                 iconic: Icons.handshake,
                 text: "Seek Help",
-                onPress: () => {},
+                 onPress:()=>{Get.to(const SeekHelpPage())},
+               
                 buttonColour: disabledColor,
               ),
               const SizedBox(
@@ -91,7 +98,7 @@ class ResourcesContent extends StatelessWidget {
               AppButton(
                 iconic: Icons.menu_book,
                 text: "Resource Materials",
-                onPress: () => {},
+                onPress:()=> {Get.to(const ResourceMaterialPage())},
                 buttonColour: disabledColor,
               ),
             ]),

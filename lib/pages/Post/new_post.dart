@@ -47,7 +47,7 @@ class _NewPostPageState extends State<NewPostPage> {
         body: SafeArea(
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            reverse: true,
+
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Column(

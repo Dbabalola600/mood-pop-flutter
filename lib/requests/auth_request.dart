@@ -85,6 +85,25 @@ Future getUserInformation(_id) async {
   }
 }
 
+Future searchUser(find) async {
+//  var body = info;
+  String uri = "$baseUrl/users/search?Username=$find";
+
+  var url = Uri.parse(uri);
+
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return data["data"]["data"];
+  } else if (response.statusCode == 401) {
+    throw Exception("Unauthorized: Invalid credentials");
+  } else {
+    throw Exception(
+        "Failed to make the request. Status code: ${response.statusCode}");
+  }
+}
+
 //posts
 
 Future getUserposts(userId) async {
@@ -191,7 +210,7 @@ Future getJournal(userId) async {
   }
 }
 
-Future getNote(userId, noteId) async {
+Future getNote({userId, noteId}) async {
   // Map info = {"userId": userId , "Nid": noteId};
   // var body = info;
 
@@ -358,6 +377,6 @@ Future getFollowers(userId) async {
   }
 }
 
-// void main() async {
-//   print(await getJournal( "650320061837f590a3b6652c" ));
-// }
+void main() async {
+  print(await searchUser( "d" ));
+}

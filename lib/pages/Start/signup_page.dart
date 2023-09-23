@@ -71,7 +71,7 @@ class _SingUpPageState extends State<SingUpPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          reverse: true,
+
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Column(
@@ -147,7 +147,7 @@ class _SingUpPageState extends State<SingUpPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     AppButton(
-                      text: "Create Account",
+                      text: _isLoading? "Loading...":"Create Account",
                       onPress: userCreateOnClick,
                       buttonColour: primaryColor,
                       isDisabled: isButtonDisabled,

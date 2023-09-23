@@ -21,8 +21,10 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BasicAppBar(appBarTitle: ""),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
+      body: 
+      SingleChildScrollView(
+        child:  Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 120),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,8 +78,10 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               )
-            ]),
+            ],),
       ),
+      ),
+     
     );
   }
 }

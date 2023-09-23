@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-
-
-
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../pages/Journal/write_journal.dart';
 
@@ -20,12 +17,17 @@ class AppDrawer extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  void userLogoutClick() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.clear();
+    Get.to(const LoginPage());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: disabledColor,
-
-
       width: 200,
       child: SingleChildScrollView(
         child: Padding(
@@ -59,8 +61,8 @@ class AppDrawer extends StatelessWidget {
                 children: [
                   DrawerNavButtons(
                     name: "Profile",
-                    svgUrl:"",
-                    icon:  Icons.person,
+                    svgUrl: "",
+                    icon: Icons.person,
                     onClickHandler: () {
                       Navigator.pop(context); // Close the drawer
                       Navigator.push(
@@ -73,7 +75,7 @@ class AppDrawer extends StatelessWidget {
                   ),
                   DrawerNavButtons(
                     name: "New Post",
-                       icon: Icons.note_add,
+                    icon: Icons.note_add,
                     svgUrl: "",
                     onClickHandler: () {
                       Navigator.pop(context); // Close the drawer
@@ -87,7 +89,7 @@ class AppDrawer extends StatelessWidget {
                   ),
                   DrawerNavButtons(
                     name: "New Journal",
-                       icon: Icons.bookmark_add_sharp,
+                    icon: Icons.bookmark_add_sharp,
                     svgUrl: "",
                     onClickHandler: () {
                       Navigator.pop(context); // Close the drawer
@@ -101,7 +103,7 @@ class AppDrawer extends StatelessWidget {
                   ),
                   DrawerNavButtons(
                     name: "Seek Help",
-                       icon: Icons.handshake,
+                    icon: Icons.handshake,
                     svgUrl: "",
                     onClickHandler: () {
                       Navigator.pop(context); // Close the drawer
@@ -113,9 +115,8 @@ class AppDrawer extends StatelessWidget {
                       );
                     },
                   ),
-                 
                   DrawerNavButtons(
-                    name: "Friends" ,
+                    name: "Friends",
                     icon: Icons.people_alt,
                     svgUrl: "",
                     onClickHandler: () {
@@ -131,18 +132,18 @@ class AppDrawer extends StatelessWidget {
                 ],
               ),
               const SizedBox(
-                    height: 80,
-                  ),
+                height: 80,
+              ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Row(
                     children: [
                       DrawerNavButtons(
-                        icon:Icons.logout,
+                        icon: Icons.logout,
                         name: "Logout",
                         svgUrl: "",
-                        onClickHandler: () => Get.to(const LoginPage()),
+                        onClickHandler: userLogoutClick,
                       ),
                     ],
                   ),
@@ -182,7 +183,7 @@ class DrawerNavButtons extends StatelessWidget {
         child: Ink(
           child: Row(
             children: [
-            Icon(icon),
+              Icon(icon),
               SvgPicture.asset(
                 svgUrl,
               ),
@@ -190,8 +191,9 @@ class DrawerNavButtons extends StatelessWidget {
               //   width: 10,
               // ),
               const SizedBox(
-                      width: 10, height: 40,
-                    ),
+                width: 10,
+                height: 40,
+              ),
               Text(
                 name,
                 style: const TextStyle(
