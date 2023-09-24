@@ -71,12 +71,12 @@ class _StatefulAppBarState extends State<LoggedAppBar> {
         ),
       ),
       leading: Padding(
-        padding: const EdgeInsets.only(left: 20.0),
+        padding: const EdgeInsets.only(left: 10.0),
         child: Builder(builder: (context) {
           return IconButton(
             icon: uint8List != null && uint8List.isNotEmpty
                 ? ClipRRect(
-                    borderRadius: BorderRadius.circular(7000),
+                    borderRadius: BorderRadius.circular(50),
                     child: SizedBox(
                       width: 50,
                       height: 50,

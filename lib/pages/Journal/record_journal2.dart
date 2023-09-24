@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
-
 import '../../components/displays/back_appbar.dart';
 
 import '../../utils/colours.dart';
 import 'sound_record/sound_recorder.dart';
-import 'sound_record/timer.dart';
 
 class RecordJournalPage extends StatefulWidget {
   const RecordJournalPage({Key? key}) : super(key: key);
@@ -14,7 +12,14 @@ class RecordJournalPage extends StatefulWidget {
 }
 
 class _RecordJournalPageState extends State<RecordJournalPage> {
+
+
+  // page state
+  bool isButtonDisabled = true;
+
+
   final recorder = SoundRecorder();
+
   @override
   void initState() {
     super.initState();
@@ -24,23 +29,18 @@ class _RecordJournalPageState extends State<RecordJournalPage> {
   @override
   void dispose() {
     recorder.dispose();
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final isRecording = recorder.isRecording;
-    final icon = isRecording ? Icons.stop : Icons.mic;
-    final text = isRecording ? "STOP" : "START";
-    final primary = isRecording ? Colors.red : Colors.white;
-    final onPrimary = isRecording ? Colors.white : Colors.red;
+    bool isRecording = recorder.isRecording;
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
         appBar: backButtonAppbar(() {}, "Record Journal", secondaryColor),
         backgroundColor: secondaryColor,
-        body: SafeArea(
+        body: const SafeArea(
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Padding(
@@ -52,10 +52,10 @@ class _RecordJournalPageState extends State<RecordJournalPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                       SizedBox(
                         height: 30,
                       ),
-                      Center(
+                       Center(
                         child: Text(
                           "Coming Soon",
                           textAlign: TextAlign.center,
@@ -65,32 +65,11 @@ class _RecordJournalPageState extends State<RecordJournalPage> {
                               fontWeight: FontWeight.bold),
                         ),
                       ),
-                      SizedBox(
+                       SizedBox(
                         height: 20,
                       ),
-                      ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                            minimumSize: Size(175, 50),
-                            backgroundColor: primary,
-                            foregroundColor: onPrimary),
-                        label: Text(
-                          text,
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        icon: Icon(icon),
-                        onPressed: () async {
-                          final isRecording = await recorder.togglRecording();
-                       setState(() {
-                         
-                       });
-                        },
-
-                        
-                      ),
-
-                      TimerPage()
-
+                       
+                      
                     ],
                   ),
                 ],

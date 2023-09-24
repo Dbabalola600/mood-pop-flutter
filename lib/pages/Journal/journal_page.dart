@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 import 'package:get/get.dart';
-import 'package:mood_pop/requests/auth_request.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/displays/Buttons/oval_button.dart';
+
 import '../../components/displays/journal_display.dart';
 import '../../components/displays/logged_appbar.dart';
 import '../../components/navigation/app_drawer.dart';
 import '../../components/navigation/bottom_navbar.dart';
+import '../../requests/auth_request.dart';
 import '../../utils/colours.dart';
 import '../DashBoard/dash_board_page.dart';
 import '../Feed/feed_page.dart';
 import '../Notifications/notifications_page.dart';
 
 import '../Resources/resources_page.dart';
+import 'audio_notes_page.dart';
 import 'record_journal.dart';
 import 'write_journal.dart';
+import 'written_notes_page.dart';
 
 class JournalPage extends StatefulWidget {
   const JournalPage({Key? key}) : super(key: key);
@@ -40,7 +44,8 @@ class _JournalPageState extends State<JournalPage> {
     return WillPopScope(
         onWillPop: () => Future.value(false),
         child: Scaffold(
-        appBar: LoggedAppBar(alertButtonHandler: (){}, appBarTitle: "Journal"),
+          appBar:
+              LoggedAppBar(alertButtonHandler: () {}, appBarTitle: "Journal"),
           backgroundColor: secondaryColor,
           drawer: AppDrawer(),
           bottomNavigationBar: CustomBottomNavigationBar(
@@ -95,13 +100,24 @@ class Journals {
 
 class JournalContentState extends State<JournalContent> {
   bool _isLoading = false;
+  String? username = "user";
+  dynamic userImage = " ";
   List<Journals> journalList = [];
   List<Map<String, String>> journalData = [];
-
   @override
   void initState() {
     super.initState();
     showInfo();
+    loadSharedPreferences();
+    // Call showInfo when the widget is inserted into the tree.
+  }
+
+  Future<void> loadSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      username = prefs.getString("username");
+      userImage = prefs.getString("image");
+    });
   }
 
   Future<void> showInfo() async {
@@ -179,21 +195,53 @@ class JournalContentState extends State<JournalContent> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Your Notes",
-                      style: TextStyle(color: primaryColor, fontSize: 18),
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Container(
-                    height: 4,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      color: primaryColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                  Row(
+                    children: [
+                      Column(
+                        children: [
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Your Notes",
+                              style:
+                                  TextStyle(color: primaryColor, fontSize: 18),
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Container(
+                            height: 4,
+                            width: 120,
+                            decoration: BoxDecoration(
+                              color: primaryColor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () => {Get.to(const WrittenNotesPage())},
+                        child: const Row(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "View All",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: primaryColor,
+                                ),
+                              ),
+                            ),
+                            Icon(
+                              Icons.read_more,
+                              color: primaryColor,
+                              size: 12,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
                 ],
               ),
@@ -201,8 +249,6 @@ class JournalContentState extends State<JournalContent> {
             const SizedBox(
               height: 15,
             ),
-
-            // Text(journalList[0].content),
             Column(
               children: journalList.length.toInt() == 0
                   ? [
@@ -218,7 +264,7 @@ class JournalContentState extends State<JournalContent> {
                     ]
                   : [
                       ListView.builder(
-                        itemCount: journalList.length,
+                        itemCount: 3,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           final info = journalList[index];
@@ -229,11 +275,40 @@ class JournalContentState extends State<JournalContent> {
                                 nId: info.id),
                           );
                         },
-                      )
+                      ),
                     ],
             ),
+            const SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Your Recordings",
+                      style: TextStyle(color: primaryColor, fontSize: 18),
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Container(
+                    height: 4,
+                    width: 160,
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
 
-            
           ],
         )
       ],

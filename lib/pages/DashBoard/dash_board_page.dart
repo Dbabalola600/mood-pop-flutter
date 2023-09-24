@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mood_pop/pages/DashBoard/dash_post_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -130,12 +131,12 @@ class DashBoardContentState extends State<DashBoardContent> {
 
   List<Map<String, String>> postData = [];
   @override
-  void initState() {
-    super.initState();
-    showInfo();
-    loadSharedPreferences();
-    // Call showInfo when the widget is inserted into the tree.
-  }
+  // void initState() {
+  //   super.initState();
+  //   showInfo();
+  //   loadSharedPreferences();
+  //   // Call showInfo when the widget is inserted into the tree.
+  // }
 
   Future<void> loadSharedPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -289,37 +290,9 @@ class DashBoardContentState extends State<DashBoardContent> {
         //   },
         // ),
 
-        Column(
-          children: postList.length.toInt() == 0
-              ? [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: SvgPicture.asset(
-                      "assets/Empty/Blankcontent.svg",
-                      alignment: Alignment.center,
-                      width: 200,
-                      height: 300,
-                    ),
-                  ),
-                ]
-              : [
-                  ListView.builder(
-                    itemCount: postList.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, int index) {
-                      final info = postList[index];
 
-                      return PostsDisplay(
-                        props: FeedProps(
-                          content: info.category,
-                          date: info.date,
-                          name: username ?? "user",
-                        ),
-                      );
-                    },
-                  ),
-                ],
-        ),
+DashBoardPostPage()
+        
       ]),
     ]);
   }
