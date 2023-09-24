@@ -53,7 +53,7 @@ class _TimerPageState extends State<TimerPage> {
             fit: StackFit.expand,
             children: [
               CircularProgressIndicator(
-                value: seconds / maxSeconds,
+                value: 1- seconds / maxSeconds,
                 valueColor: AlwaysStoppedAnimation(Colors.white),
                 backgroundColor: Colors.green,
                 strokeWidth: 12,

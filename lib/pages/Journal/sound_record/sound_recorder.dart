@@ -1,7 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:path_provider/path_provider.dart';
+
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart';
 
-final pathToSaveAudio = "audio_record_mood.aac";
+var pathToSaveAudio = "audio_record_mood.aac";
 
 class SoundRecorder {
   FlutterSoundRecorder? _audioRecorder;
@@ -29,7 +36,11 @@ class SoundRecorder {
   }
 
   Future _record() async {
-    await _audioRecorder!.startRecorder(toFile: pathToSaveAudio);
+    final Directory dir = await getApplicationCacheDirectory();
+
+    var newPath = File(join(dir.path, pathToSaveAudio));
+
+    await _audioRecorder!.startRecorder(toFile: newPath.path);
   }
 
   Future _stop() async {
@@ -43,6 +54,43 @@ class SoundRecorder {
       await _record();
     } else {
       await _stop();
+      await saveAudioAsBase64();
+    }
+  }
+
+  Future saveAudioAsBase64() async {
+    final audioFile = File(pathToSaveAudio);
+
+    try {
+      if (Platform.isIOS) {
+        final Directory dir = await getApplicationCacheDirectory();
+        final String iosFilePath = File(join(dir.path, pathToSaveAudio)).path;
+
+        final File iosFile = File(iosFilePath);
+
+        if (await iosFile.exists()) {
+          final List<int> bytes = await iosFile.readAsBytes();
+          // final String base64String = base64Encode(bytes);
+          final String base64String =
+              'data:audio/aac;base64,' + base64Encode(bytes);
+
+          // Save the Base64 string to SharedPreferences.
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString("TempAudio", base64String);
+        } else {
+          print("error stilll");
+        }
+      } else {
+        if (pathToSaveAudio.isNotEmpty) {
+          print("hee");
+          final bytes = await audioFile.readAsBytes();
+          final base64String = base64Encode(bytes);
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString("TempAudio", base64String);
+        }
+      }
+    } catch (e) {
+      print("error $e");
     }
   }
 }
