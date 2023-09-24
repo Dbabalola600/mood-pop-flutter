@@ -38,8 +38,8 @@ class _ResourcesPageState extends State<ResourcesPage> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-        appBar: loggedAppBar(() {}, "ResourcesPage"),
-        backgroundColor: secondaryColor,
+       appBar: LoggedAppBar(alertButtonHandler: (){}, appBarTitle: "Resources"),
+          backgroundColor: secondaryColor,
         drawer: AppDrawer(),
         bottomNavigationBar: CustomBottomNavigationBar(
           currentIndex: _currentIndex,

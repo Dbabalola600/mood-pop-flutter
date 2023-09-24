@@ -40,7 +40,7 @@ class _JournalPageState extends State<JournalPage> {
     return WillPopScope(
         onWillPop: () => Future.value(false),
         child: Scaffold(
-          appBar: loggedAppBar(() {}, "Journal"),
+        appBar: LoggedAppBar(alertButtonHandler: (){}, appBarTitle: "Journal"),
           backgroundColor: secondaryColor,
           drawer: AppDrawer(),
           bottomNavigationBar: CustomBottomNavigationBar(
@@ -233,9 +233,7 @@ class JournalContentState extends State<JournalContent> {
                     ],
             ),
 
-            const SizedBox(
-              height: 15,
-            ),
+            
           ],
         )
       ],

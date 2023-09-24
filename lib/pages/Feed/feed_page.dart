@@ -41,8 +41,8 @@ class _FeedPageState extends State<FeedPage> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-        appBar: loggedAppBar(() {}, "Feed"),
-        backgroundColor: secondaryColor,
+        appBar: LoggedAppBar(alertButtonHandler: (){}, appBarTitle: "Feed"),
+         backgroundColor: secondaryColor,
         drawer: AppDrawer(),
         bottomNavigationBar: CustomBottomNavigationBar(
           currentIndex: _currentIndex,

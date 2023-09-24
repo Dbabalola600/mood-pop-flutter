@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/displays/app_button.dart';
@@ -35,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     void userLoginOnClick() async {
-     setState(() {
+      setState(() {
         _isLoading = true;
       });
       var response = await loginUserWithUsernameAndPassword(
@@ -45,10 +44,13 @@ class _LoginPageState extends State<LoginPage> {
         var userId = response["data"]["_id"];
         var email = response["data"]["email"];
         var username = response["data"]["UserName"];
+          var image = response["data"]["image"];
+        
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("userId", userId);
         prefs.setString("email", email);
         prefs.setString("username", username);
+        prefs.setString("image", image);
         // print(prefs.getString("userId"));
 
         Get.to(const DashBoardPage());
@@ -56,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
         print("incorrect");
       }
 
-     setState(() {
+      setState(() {
         _isLoading = false;
       });
     }
@@ -75,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     return Scaffold(
-      appBar: backButtonAppbar( (){}, "Welcome Back", whiteColor),
+      appBar: backButtonAppbar(() {}, "Welcome Back", whiteColor),
       body: SafeArea(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -150,10 +152,9 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     AppButton(
-                      text: _isLoading? "Loading...":"Sign In",
+                      text: _isLoading ? "Loading..." : "Sign In",
                       onPress: userLoginOnClick,
                       buttonColour: primaryColor,
-
                       isDisabled: isButtonDisabled,
                     ),
                     const SizedBox(

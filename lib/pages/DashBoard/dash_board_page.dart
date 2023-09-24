@@ -1,13 +1,14 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 import '../../components/displays/logged_appbar.dart';
 import '../../components/displays/posts_display.dart';
 import '../../components/inputs/search_bar.dart';
+
+
 import '../../components/navigation/app_drawer.dart';
 import '../../components/navigation/bottom_navbar.dart';
 
@@ -17,8 +18,9 @@ import '../Feed/feed_page.dart';
 import '../Journal/journal_page.dart';
 import '../Notifications/notifications_page.dart';
 
-
 import '../Resources/resources_page.dart';
+import 'dart:convert';
+import 'dart:typed_data';
 
 class DashBoardPage extends StatefulWidget {
   const DashBoardPage({Key? key}) : super(key: key);
@@ -42,7 +44,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-        appBar: loggedAppBar(() {}, ""),
+        appBar: LoggedAppBar(alertButtonHandler: (){}, appBarTitle: ""),
         backgroundColor: secondaryColor,
         drawer: AppDrawer(),
         bottomNavigationBar: CustomBottomNavigationBar(
@@ -77,8 +79,6 @@ class _DashBoardPageState extends State<DashBoardPage> {
     );
   }
 }
-
-
 
 class DashBoardContent extends StatefulWidget {
   @override
@@ -124,6 +124,7 @@ class Posts {
 class DashBoardContentState extends State<DashBoardContent> {
   bool _isLoading = false;
   String? username = "user";
+  dynamic userImage = " ";
   UserIn? user;
   List<Posts> postList = [];
 
@@ -140,6 +141,7 @@ class DashBoardContentState extends State<DashBoardContent> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       username = prefs.getString("username");
+      userImage = prefs.getString("image");
     });
   }
 
@@ -150,7 +152,7 @@ class DashBoardContentState extends State<DashBoardContent> {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var response = await getUserposts(prefs.getString("userId"));
-    // print(response);
+    // print(prefs.getString("image"));
 
     if (response != null) {
       var postData = response;
@@ -163,22 +165,19 @@ class DashBoardContentState extends State<DashBoardContent> {
           date: post["date"],
         );
       }).toList();
-
-
-      
     }
     setState(() {
       _isLoading = false;
     });
 
     // return jsonDecode(response);
-    
   }
 
   @override
   Widget build(BuildContext context) {
     String textToCopy = "This is the text to be copied";
 
+    
     return Column(children: [
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Padding(
@@ -232,6 +231,10 @@ class DashBoardContentState extends State<DashBoardContent> {
             onSearch: (query) {},
           ),
         ),
+
+        // Center(
+        //   child: image,
+        // ),
         const SizedBox(
           height: 15,
         ),

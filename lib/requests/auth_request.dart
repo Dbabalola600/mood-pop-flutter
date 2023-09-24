@@ -104,6 +104,47 @@ Future searchUser(find) async {
   }
 }
 
+
+Future updateUsername({id, UserName}) async {
+  Map info = {"_id": id, "UserName":UserName};
+  String uri = "$baseUrl/users/UpdateUsername";
+  var body = info;
+  var url = Uri.parse(uri);
+
+  final response = await http.post(url, body: body);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return data;
+  } else if (response.statusCode == 401) {
+    throw Exception("Unauthorized: Invalid credentials");
+  } else {
+    throw Exception(
+        "Failed to make the request. Status code: ${response.statusCode}");
+  }
+}
+
+Future updateAvatar({id, image}) async {
+  Map info = {"_id": id, "image":image};
+  String uri = "$baseUrl/users/UpdateImage";
+  var body = info;
+  var url = Uri.parse(uri);
+
+  final response = await http.post(url, body: body);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return data;
+  } else if (response.statusCode == 401) {
+    throw Exception("Unauthorized: Invalid credentials");
+  } else {
+    throw Exception(
+        "Failed to make the request. Status code: ${response.statusCode}");
+  }
+}
+
+
+
 //posts
 
 Future getUserposts(userId) async {
@@ -147,7 +188,7 @@ Future newUserpost(userId, post, content) async {
 }
 
 Future getfollowingposts(userId) async {
-  Map info = {"userId": userId};
+
 //  var body = info;
   String uri = "$baseUrl/post/getFollowingPost?userId=$userId";
 
@@ -378,5 +419,5 @@ Future getFollowers(userId) async {
 }
 
 void main() async {
-  print(await searchUser( "d" ));
+  print(await updateAvatar(  id: "650320061837f590a3b6652c" ,image: "image"));
 }

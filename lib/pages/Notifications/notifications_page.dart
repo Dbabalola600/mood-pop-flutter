@@ -34,8 +34,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-        appBar: loggedAppBar(() {}, "NOTIFICATIONS"),
-        drawer: AppDrawer(),
+        appBar: LoggedAppBar(alertButtonHandler: (){}, appBarTitle: "Notifications"),
+          drawer: AppDrawer(),
         backgroundColor: secondaryColor,
         bottomNavigationBar: CustomBottomNavigationBar(
           currentIndex: _currentIndex,

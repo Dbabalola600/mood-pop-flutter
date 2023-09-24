@@ -30,8 +30,8 @@ class _PostPageState extends State<PostPage> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-        appBar: loggedAppBar(() {}, "PostPage"),
-        backgroundColor: secondaryColor,
+       appBar: LoggedAppBar(alertButtonHandler: (){}, appBarTitle: "Posts"),
+         backgroundColor: secondaryColor,
         drawer: AppDrawer(),
         bottomNavigationBar: CustomBottomNavigationBar(
           currentIndex: _currentIndex,
