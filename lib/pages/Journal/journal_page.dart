@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/displays/Buttons/oval_button.dart';
 
+import '../../components/displays/audio_journal_display.dart';
 import '../../components/displays/journal_display.dart';
 import '../../components/displays/logged_appbar.dart';
 import '../../components/navigation/app_drawer.dart';
@@ -17,10 +19,10 @@ import '../Feed/feed_page.dart';
 import '../Notifications/notifications_page.dart';
 
 import '../Resources/resources_page.dart';
-import 'audio_notes_page.dart';
+import 'Audio/audio_notes_page.dart';
 import 'record_journal.dart';
 import 'write_journal.dart';
-import 'written_notes_page.dart';
+import 'Written/written_notes_page.dart';
 
 class JournalPage extends StatefulWidget {
   const JournalPage({Key? key}) : super(key: key);
@@ -98,18 +100,37 @@ class Journals {
       required this.title});
 }
 
+class AudioJournals {
+  final dynamic id;
+  final dynamic title;
+  final dynamic content;
+  final dynamic date;
+
+  AudioJournals(
+      {required this.id,
+      required this.date,
+      required this.content,
+      required this.title});
+}
+
 class JournalContentState extends State<JournalContent> {
   bool _isLoading = false;
   String? username = "user";
   dynamic userImage = " ";
+
+  //written
   List<Journals> journalList = [];
   List<Map<String, String>> journalData = [];
+
+//audio
+  List<AudioJournals> audioList = [];
+  List<Map<String, String>> audioData = [];
+
   @override
   void initState() {
     super.initState();
     showInfo();
     loadSharedPreferences();
-    // Call showInfo when the widget is inserted into the tree.
   }
 
   Future<void> loadSharedPreferences() async {
@@ -131,6 +152,18 @@ class JournalContentState extends State<JournalContent> {
 
     if (userId != null) {
       var response = await getJournal(userId);
+      var auResponse = await getAudioJournal(userId);
+
+      if (response != null) {
+        var audioData = auResponse;
+        audioList = (audioData as List).map((audio) {
+          return AudioJournals(
+              id: audio["id"],
+              date: audio["Date"],
+              content: audio["content"],
+              title: audio["title"]);
+        }).toList();
+      }
 
       if (response != null) {
         var journalData = response;
@@ -249,6 +282,8 @@ class JournalContentState extends State<JournalContent> {
             const SizedBox(
               height: 15,
             ),
+
+            // written journals
             Column(
               children: journalList.length.toInt() == 0
                   ? [
@@ -264,18 +299,20 @@ class JournalContentState extends State<JournalContent> {
                     ]
                   : [
                       ListView.builder(
-                        itemCount: 3,
+                        itemCount:
+                            journalList.length > 3 ? 3 : journalList.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           final info = journalList[index];
                           return JournalDisplay(
                             props: JournalProps(
-                                date: info.date,
-                                title: info.title,
-                                nId: info.id),
+                              date: info.date,
+                              title: info.title,
+                              nId: info.id,
+                            ),
                           );
                         },
-                      ),
+                      )
                     ],
             ),
             const SizedBox(
@@ -286,21 +323,53 @@ class JournalContentState extends State<JournalContent> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Your Recordings",
-                      style: TextStyle(color: primaryColor, fontSize: 18),
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Container(
-                    height: 4,
-                    width: 160,
-                    decoration: BoxDecoration(
-                      color: primaryColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                  Row(
+                    children: [
+                      Column(
+                        children: [
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Your Recordings",
+                              style:
+                                  TextStyle(color: primaryColor, fontSize: 18),
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Container(
+                            height: 4,
+                            width: 160,
+                            decoration: BoxDecoration(
+                              color: primaryColor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () => {Get.to(const AudioNotesPage())},
+                        child: const Row(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "View All",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: primaryColor,
+                                ),
+                              ),
+                            ),
+                            Icon(
+                              Icons.read_more,
+                              color: primaryColor,
+                              size: 12,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
                 ],
               ),
@@ -309,6 +378,52 @@ class JournalContentState extends State<JournalContent> {
               height: 15,
             ),
 
+            //audio jounral
+
+            Column(
+              children: audioList.length.toInt() == 0
+                  ? [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: SvgPicture.asset(
+                          "assets/Empty/BlankNote.svg",
+                          alignment: Alignment.center,
+                          width: 100,
+                          height: 300,
+                        ),
+                      ),
+                    ]
+                  : [
+                      // ListView.builder(
+                      //   itemCount: 3,
+                      //   shrinkWrap: true,
+                      //   itemBuilder: (context, index) {
+                      //     final info = audioList[index];
+                      //     return AudioJournalDisplay(
+                      //       props: AudioJournalProps(
+                      //           date: info.date,
+                      //           title: info.title,
+                      //           nId: info.id),
+                      //     );
+                      //   },
+                      // ),
+
+                      ListView.builder(
+                        itemCount: audioList.length > 3 ? 3 : audioList.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          final info = audioList[index];
+                          return AudioJournalDisplay(
+                            props: AudioJournalProps(
+                              date: info.date,
+                              title: info.title,
+                              nId: info.id,
+                            ),
+                          );
+                        },
+                      )
+                    ],
+            ),
           ],
         )
       ],

@@ -3,11 +3,11 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../components/displays/back_appbar.dart';
-import '../../components/displays/journal_display.dart';
+import '../../../components/displays/back_appbar.dart';
+import '../../../components/displays/journal_display.dart';
 
-import '../../requests/auth_request.dart';
-import '../../utils/colours.dart';
+import '../../../requests/auth_request.dart';
+import '../../../utils/colours.dart';
 
 class WrittenNotesPage extends StatefulWidget {
   const WrittenNotesPage({Key? key}) : super(key: key);

@@ -293,6 +293,78 @@ Future deleteNote(userId, noteId) async {
   }
 }
 
+//audio journal 
+
+
+Future getAudioJournal(userId) async {
+  Map info = {"userId": userId};
+  var body = info;
+
+  String uri = "$baseUrl/audio/getjournal";
+
+  var url = Uri.parse(uri);
+
+  final response = await http.post(url, body: body);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return data["data"];
+  } else if (response.statusCode == 401) {
+    throw Exception("Unauthorized: Invalid credentials");
+  } else {
+    throw Exception(
+        "Failed to make the request. Status code: ${response.statusCode}");
+  }
+}
+
+
+
+
+Future createAudioJournal({userId, title, content}) async {
+  Map info = {"userId": userId, "title": title, "content": content};
+  var body = info;
+
+  String uri = "$baseUrl/audio/create";
+
+  var url = Uri.parse(uri);
+
+  final response = await http.post(url, body: body);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return data;
+  } else if (response.statusCode == 401) {
+    throw Exception("Unauthorized: Invalid credentials");
+  } else {
+    throw Exception(
+        "Failed to make the request. Status code: ${response.statusCode}");
+  }
+}
+
+
+Future getAudioNote({userId, noteId}) async {
+  // Map info = {"userId": userId , "Nid": noteId};
+  // var body = info;
+
+  String uri = "$baseUrl/audio/getNote?userId=$userId&Nid=$noteId";
+
+  var url = Uri.parse(uri);
+
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return data["data"];
+  } else if (response.statusCode == 401) {
+    throw Exception("Unauthorized: Invalid credentials");
+  } else {
+    throw Exception(
+        "Failed to make the request. Status code: ${response.statusCode}");
+  }
+}
+
+
+
 //notifications
 
 Future countNotification(userId) async {
@@ -419,5 +491,5 @@ Future getFollowers(userId) async {
 }
 
 void main() async {
-  print(await updateAvatar(  id: "650320061837f590a3b6652c" ,image: "image"));
+  print(await getAudioJournal( "650320061837f590a3b6652c"));
 }

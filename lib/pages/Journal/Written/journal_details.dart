@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../components/displays/back_appbar.dart';
-import '../../requests/auth_request.dart';
-import '../../utils/colours.dart';
+import '../../../components/displays/back_appbar.dart';
+import '../../../requests/auth_request.dart';
+import '../../../utils/colours.dart';
 
 class JournalDetailsPage extends StatefulWidget {
   final String nId;
@@ -52,6 +52,10 @@ class _JournalDetailsPageState extends State<JournalDetailsPage> {
       journInfo?.content = response["content"];
       journInfo?.title = response["title"];
       journInfo?.date = response["Date"];
+      _isLoading = false;
+    });
+
+     setState(() {
       _isLoading = false;
     });
   }

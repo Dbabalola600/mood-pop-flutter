@@ -3,11 +3,11 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../components/displays/back_appbar.dart';
-import '../../components/displays/journal_display.dart';
+import '../../../components/displays/audio_journal_display.dart';
+import '../../../components/displays/back_appbar.dart';
 
-import '../../requests/auth_request.dart';
-import '../../utils/colours.dart';
+import '../../../requests/auth_request.dart';
+import '../../../utils/colours.dart';
 
 class AudioNotesPage extends StatefulWidget {
   const AudioNotesPage({Key? key}) : super(key: key);
@@ -61,7 +61,7 @@ class _AudioNotesPageState extends State<AudioNotesPage> {
     String? userId = prefs.getString("userId");
 
     if (userId != null) {
-      var response = await getJournal(userId);
+      var response = await getAudioJournal(userId);
 
       if (response != null) {
         var journalData = response;
@@ -95,7 +95,7 @@ class _AudioNotesPageState extends State<AudioNotesPage> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-        appBar: backButtonAppbar(() => null, "Notes", secondaryColor),
+        appBar: backButtonAppbar(() => null, "Audio Notes", secondaryColor),
         backgroundColor: secondaryColor,
         body: Column(
           children: [
@@ -115,8 +115,8 @@ class _AudioNotesPageState extends State<AudioNotesPage> {
                   itemCount: journalList.length,
                   itemBuilder: (context, index) {
                     final info = journalList[index];
-                    return JournalDisplay(
-                      props: JournalProps(
+                    return AudioJournalDisplay(
+                      props: AudioJournalProps(
                         date: info.date,
                         title: info.title,
                         nId: info.id,

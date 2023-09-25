@@ -1,15 +1,18 @@
-import 'dart:io';
+// import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:get/get.dart';
+
+// import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/displays/app_button.dart';
 import '../../components/displays/back_appbar.dart';
 
 import '../../components/inputs/app_textfield.dart';
+import '../../requests/auth_request.dart';
 import '../../utils/colours.dart';
+import 'journal_page.dart';
 import 'sound_record/sound_player.dart';
 import 'sound_record/sound_recorder.dart';
 import 'sound_record/timer_widget.dart';
@@ -43,7 +46,6 @@ class _RecordJournalPageState extends State<RecordJournalPage> {
     super.dispose();
   }
 
-  @override
   void isTextFieldBlankValidation() {
     if (titleTextController.text.isEmpty) {
       setState(() {
@@ -56,6 +58,7 @@ class _RecordJournalPageState extends State<RecordJournalPage> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     final isPlaying = player.isPlaying;
     final isRecording = recorder.isRecording;
@@ -73,11 +76,21 @@ class _RecordJournalPageState extends State<RecordJournalPage> {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      final Directory dir = await getApplicationDocumentsDirectory();
+      // final Directory dir = await getApplicationDocumentsDirectory();
 
-      print(prefs.getString("TempAudio"));
+      // print(prefs.getString("TempAudio"));
       // print(File(join(dir.path, pathToSaveAudio)));
 
+      var response = await createAudioJournal(
+          content: prefs.getString("TempAudio"),
+          title: titleTextController.text,
+          userId: prefs.getString("userId"));
+
+      if (response["status"] == 200) {
+        Get.to(const JournalPage());
+      } else {
+        print("rerror");
+      }
       setState(() {
         _isLoading = false;
       });
@@ -171,7 +184,7 @@ class _RecordJournalPageState extends State<RecordJournalPage> {
                         text: _isLoading ? "Loading..." : "Create Note",
                         onPress: userButtonClick,
                         // onPress: () {},
-                        // isDisabled: isButtonDisabled,
+                        isDisabled: isButtonDisabled,
                       ),
                     ],
                   ),

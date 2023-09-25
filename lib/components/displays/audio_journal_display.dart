@@ -1,31 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../pages/Journal/Written/journal_details.dart';
+import '../../pages/Journal/Audio/audio_journal_details_page.dart';
 
 
 
-class JournalProps {
+
+class AudioJournalProps {
   final dynamic title;
   final dynamic date;
   final dynamic nId;
 
-  JournalProps({
+  AudioJournalProps({
     required this.title,
     required this.date,
     required this.nId
   });
 }
 
-class JournalDisplay extends StatelessWidget {
-  final JournalProps props;
+class AudioJournalDisplay extends StatelessWidget {
+  final AudioJournalProps props;
 
-  JournalDisplay({required this.props});
+  AudioJournalDisplay({required this.props});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap:()=> Get.to( JournalDetailsPage(props.nId)),
+      onTap:()=> Get.to( AudioJournalDetailsPage(props.nId)),
       child: Padding(
         padding: const EdgeInsets.symmetric(
             horizontal: 10), // Add horizontal padding

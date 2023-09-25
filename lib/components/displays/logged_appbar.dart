@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_svg/svg.dart';
+
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,7 +14,7 @@ class LoggedAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Function() alertButtonHandler;
   final String appBarTitle;
 
-  LoggedAppBar({required this.alertButtonHandler, required this.appBarTitle});
+  const LoggedAppBar({super.key, required this.alertButtonHandler, required this.appBarTitle});
 
   @override
   _StatefulAppBarState createState() => _StatefulAppBarState();
@@ -52,10 +52,10 @@ class _StatefulAppBarState extends State<LoggedAppBar> {
     // Remove the prefix and decode the base64 string into bytes
     String base64Image = base64ImageWithPrefix.split(',').last;
     Uint8List uint8List = base64.decode(base64Image);
-    Image image = Image.memory(
-      uint8List,
-      fit: BoxFit.contain, // You can set the fit as needed
-    );
+    // Image image = Image.memory(
+    //   uint8List,
+    //   fit: BoxFit.contain, // You can set the fit as needed
+    // );
 
     return AppBar(
       elevation: 0,
@@ -74,7 +74,7 @@ class _StatefulAppBarState extends State<LoggedAppBar> {
         padding: const EdgeInsets.only(left: 10.0),
         child: Builder(builder: (context) {
           return IconButton(
-            icon: uint8List != null && uint8List.isNotEmpty
+            icon: uint8List.isNotEmpty
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(50),
                     child: SizedBox(
