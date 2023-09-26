@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mood_pop/requests/auth_request.dart';
+import 'package:get/get.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/displays/logged_appbar.dart';
 import '../../components/displays/user_notification.dart';
 import '../../components/navigation/app_drawer.dart';
 import '../../components/navigation/bottom_navbar.dart';
+import '../../requests/auth_request.dart';
 import '../../utils/colours.dart';
 import '../DashBoard/dash_board_page.dart';
 import '../Feed/feed_page.dart';
@@ -22,11 +24,13 @@ class NotificationsPage extends StatefulWidget {
 class RequestsNotif {
   final String reqId;
   final String userName;
+  final String userId;
   final String userImage;
 
   RequestsNotif({
     required this.reqId,
     required this.userName,
+    required this.userId,
     required this.userImage,
   });
 }
@@ -66,6 +70,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
     if (userId != null) {
       var response = await getAllRequests(userId);
 
+      // print(response);
       if (response != null) {
         var requestData = response;
 
@@ -73,7 +78,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
           return RequestsNotif(
               reqId: request["peep"]["_id"],
               userName: request["user"]["UserName"],
-              userImage: request["user"]["image"]);
+              userImage: request["user"]["image"],
+              userId: request["user"]["_id"]);
         }).toList();
       }
       // print(response);
@@ -87,6 +93,27 @@ class _NotificationsPageState extends State<NotificationsPage> {
         _isLoading = false;
       });
     }
+  }
+
+  void acceptClick({required dynamic followId, required dynamic reqId}) async {
+    setState(() {
+      _isLoading = true;
+    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // print(reqId);
+    var response = await acceptRequests(
+        userId: prefs.getString("userId"), newFollow: followId, reqId: reqId);
+
+    print(response);
+    if (response["status"] == 200) {
+      Get.to(const DashBoardPage());
+    } else {
+      print("error");
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -143,10 +170,12 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
                                         return UserNotification(
                                           props: UserNotificationProps(
-                                              name: requestList[0].userName,
-                                              Acceptclicky: () {},
+                                              name: info.userName,
+                                              Acceptclicky: () => acceptClick(
+                                                  followId: info.userId,
+                                                  reqId: info.reqId),
                                               Declineclicky: () {},
-                                              image: requestList[0].userImage),
+                                              image: info.userImage),
                                         );
                                       },
                                     ),
@@ -155,7 +184,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
                               )
                             ],
                     ),
-                   
                   ],
                 ), // Display the selected page
               ),

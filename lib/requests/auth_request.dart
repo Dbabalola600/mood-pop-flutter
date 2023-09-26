@@ -106,7 +106,7 @@ Future searchUser(find) async {
 
 //updates
 Future updateUsername({id, UserName}) async {
-  Map info = {"_id": id, "UserName":UserName};
+  Map info = {"_id": id, "UserName": UserName};
   String uri = "$baseUrl/users/UpdateUsername";
   var body = info;
   var url = Uri.parse(uri);
@@ -125,7 +125,7 @@ Future updateUsername({id, UserName}) async {
 }
 
 Future updateAvatar({id, image}) async {
-  Map info = {"_id": id, "image":image};
+  Map info = {"_id": id, "image": image};
   String uri = "$baseUrl/users/UpdateImage";
   var body = info;
   var url = Uri.parse(uri);
@@ -143,11 +143,8 @@ Future updateAvatar({id, image}) async {
   }
 }
 
-
-
-
 Future updatePassword({id, password}) async {
-  Map info = {"_id": id, "password":password};
+  Map info = {"_id": id, "password": password};
   String uri = "$baseUrl/users/UpdatePassword";
   var body = info;
   var url = Uri.parse(uri);
@@ -165,11 +162,8 @@ Future updatePassword({id, password}) async {
   }
 }
 
-
-
-
 Future updateEmail({id, email}) async {
-  Map info = {"_id": id, "email":email};
+  Map info = {"_id": id, "email": email};
   String uri = "$baseUrl/users/UpdateEmail";
   var body = info;
   var url = Uri.parse(uri);
@@ -188,8 +182,6 @@ Future updateEmail({id, email}) async {
 }
 
 //posts
-
-
 
 Future createPost({userId, title, content}) async {
   Map info = {"userId": userId, "post": title, "category": content};
@@ -211,8 +203,6 @@ Future createPost({userId, title, content}) async {
         "Failed to make the request. Status code: ${response.statusCode}");
   }
 }
-
-
 
 Future getUserposts(userId) async {
   Map info = {"userId": userId};
@@ -255,7 +245,6 @@ Future newUserpost(userId, post, content) async {
 }
 
 Future getfollowingposts(userId) async {
-
 //  var body = info;
   String uri = "$baseUrl/post/getFollowingPost?userId=$userId";
 
@@ -360,8 +349,7 @@ Future deleteNote(userId, noteId) async {
   }
 }
 
-//audio journal 
-
+//audio journal
 
 Future getAudioJournal(userId) async {
   Map info = {"userId": userId};
@@ -384,9 +372,6 @@ Future getAudioJournal(userId) async {
   }
 }
 
-
-
-
 Future createAudioJournal({userId, title, content}) async {
   Map info = {"userId": userId, "title": title, "content": content};
   var body = info;
@@ -408,7 +393,6 @@ Future createAudioJournal({userId, title, content}) async {
   }
 }
 
-
 Future getAudioNote({userId, noteId}) async {
   // Map info = {"userId": userId , "Nid": noteId};
   // var body = info;
@@ -429,8 +413,6 @@ Future getAudioNote({userId, noteId}) async {
         "Failed to make the request. Status code: ${response.statusCode}");
   }
 }
-
-
 
 //notifications
 
@@ -480,6 +462,7 @@ Future getAllRequests(userId) async {
 Future newRequests({fromId, toId}) async {
   Map info = {"fromId": fromId, "toId": toId};
   var body = info;
+//  print(body);
 
   String uri = "$baseUrl/request/newRequest";
 
@@ -498,16 +481,20 @@ Future newRequests({fromId, toId}) async {
   }
 }
 
-Future acceptRequests(userId, newFollowId, ReqId) async {
-  Map info = {"userId": userId, "newFollowId": newFollowId, "ReqiD": ReqId};
+Future acceptRequests({userId, newFollow, reqId}) async {
+  Map info = {"userId": userId, "newFollowId": newFollow, "RequiD": reqId};
   var body = info;
+
+  // print(body);
 
   String uri = "$baseUrl/request/AcceptRequest";
 
   var url = Uri.parse(uri);
 
-  final response = await http.post(url, body: body);
+  // print(await http.put(url, body:body));
 
+  final response = await http.post(url, body: body);
+  // print(response.body);
   if (response.statusCode == 200) {
     final data = json.decode(response.body);
     return data;
@@ -557,6 +544,13 @@ Future getFollowers(userId) async {
   }
 }
 
-void main() async {
-  print(await newRequests( fromId: "650320061837f590a3b6652c",toId: "6503204a1837f590a3b6653a"));
-}
+// void main() async {
+//   print(await acceptRequests(
+//       userId: "6503204a1837f590a3b6653a",
+//       newFollow: "650320061837f590a3b6652c",
+//       reqId: "6512ec682a21f3884f05e84c"));
+// }
+
+// void main() async {
+//   print(await newRequests(fromId:  "650320061837f590a3b6652c",toId: "6503204a1837f590a3b6653a"));
+// }

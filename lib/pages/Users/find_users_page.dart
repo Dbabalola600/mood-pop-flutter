@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/displays/back_appbar.dart';
@@ -84,7 +83,7 @@ class _FindUsersPageState extends State<FindUsersPage> {
       var response =
           await newRequests(fromId: prefs.getString("userId"), toId: newRec);
 
-print(response["status"]);
+      print(response["status"]);
       if (response["status"] == 200) {
         Get.to(DashBoardPage());
       }
@@ -144,7 +143,9 @@ print(response["status"]);
                                           name: info.UserName,
                                           clicky: () =>
                                               userButtonClick(info.id),
-                                          cilckyText: _isLoading? "Loading":"Request"),
+                                          cilckyText: _isLoading
+                                              ? "Loading"
+                                              : "Request"),
                                     );
                                   },
                                 ),
