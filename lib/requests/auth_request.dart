@@ -184,7 +184,7 @@ Future updateEmail({id, email}) async {
 //posts
 
 Future createPost({userId, title, content}) async {
-  Map info = {"userId": userId, "post": title, "category": content};
+  Map info = {"userId": userId, "post": content, "category": title};
   var body = info;
 
   String uri = "$baseUrl/post/create";
@@ -544,12 +544,10 @@ Future getFollowers(userId) async {
   }
 }
 
-// void main() async {
-//   print(await acceptRequests(
-//       userId: "6503204a1837f590a3b6653a",
-//       newFollow: "650320061837f590a3b6652c",
-//       reqId: "6512ec682a21f3884f05e84c"));
-// }
+void main() async {
+  print(await getfollowingposts(
+     "6503204a1837f590a3b6653a"));
+}
 
 // void main() async {
 //   print(await newRequests(fromId:  "650320061837f590a3b6652c",toId: "6503204a1837f590a3b6653a"));

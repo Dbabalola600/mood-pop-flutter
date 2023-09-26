@@ -36,17 +36,18 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   @override
   void initState() {
     super.initState();
-    startShowInfoTimer();
+    // startShowInfoTimer();
+    showInfo();
 
     // Call showInfo when the widget is inserted into the tree.
   }
 
-  void startShowInfoTimer() {
-    Timer.periodic(const Duration(seconds: 3), (timer) {
-      // Call the showInfo function.
-      showInfo();
-    });
-  }
+  // void startShowInfoTimer() {
+  //   Timer.periodic(const Duration(seconds: 3), (timer) {
+  //     // Call the showInfo function.
+  //     showInfo();
+  //   });
+  // }
 
   Future<void> showInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

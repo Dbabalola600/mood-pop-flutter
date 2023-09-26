@@ -91,37 +91,40 @@ class _DashBoardPostPageState extends State<DashBoardPostPage> {
       fit: BoxFit.contain, // You can set the fit as needed
     );
 
-    return Column(
-      children: postList.length.toInt() == 0
-          ? [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: SvgPicture.asset(
-                  "assets/Empty/Blankcontent.svg",
-                  alignment: Alignment.center,
-                  width: 200,
-                  height: 300,
+    if (_isLoading) {
+      return Text(_isLoading ? "loading..." : "");
+    } else {
+      return Column(
+        children: postList.length.toInt() == 0
+            ? [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: SvgPicture.asset(
+                    "assets/Empty/Blankcontent.svg",
+                    alignment: Alignment.center,
+                    width: 200,
+                    height: 300,
+                  ),
                 ),
-              ),
-            ]
-          : [
-              ListView.builder(
-                itemCount: postList.length,
-                shrinkWrap: true,
-                itemBuilder: (context, int index) {
-                  final info = postList[index];
+              ]
+            : [
+                ListView.builder(
+                  itemCount: postList.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, int index) {
+                    final info = postList[index];
 
-                  return PostsDisplay(
-                    props: FeedProps(
-                      content: info.category,
-                      date: info.date,
-                      name: username ?? "user",
-                      image: userImage
-                    ),
-                  );
-                },
-              ),
-            ],
-    );
+                    return PostsDisplay(
+                      props: FeedProps(
+                          content: info.category,
+                          date: info.date,
+                          name: username ?? "user",
+                          image: userImage),
+                    );
+                  },
+                ),
+              ],
+      );
+    }
   }
 }

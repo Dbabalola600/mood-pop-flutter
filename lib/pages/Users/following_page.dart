@@ -14,9 +14,9 @@ class FollowingPage extends StatefulWidget {
 }
 
 class Following {
-  final String username;
-  final String userImage;
-  final String userId;
+ dynamic username;
+  dynamic userImage;
+ dynamic userId;
 
   Following(
       {required this.username, required this.userImage, required this.userId});

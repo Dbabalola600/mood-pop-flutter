@@ -14,9 +14,9 @@ class FollowersPage extends StatefulWidget {
 }
 
 class Followers {
-  final String username;
-  final String userImage;
-  final String userId;
+   dynamic username;
+   dynamic userImage;
+   dynamic userId;
 
   Followers(
       {required this.username, required this.userImage, required this.userId});
@@ -42,6 +42,9 @@ class _FollowersPageState extends State<FollowersPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     var follwerResponse = await getFollowers(prefs.getString("userId"));
+
+
+    // print(follwerResponse);
     if (follwerResponse != null) {
       var followerData = follwerResponse;
       // print("here"+postData);

@@ -7,8 +7,8 @@ import 'package:mood_pop/utils/colours.dart';
 
 class UserSearchProps {
    dynamic image;
-  final dynamic name;
-  final Function? clicky;
+   dynamic name;
+  final Function clicky;
   final String cilckyText;
 
   UserSearchProps({

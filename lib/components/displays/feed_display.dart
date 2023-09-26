@@ -19,14 +19,24 @@ class FeedProps {
   });
 }
 
-class FeedDisplay extends StatelessWidget {
+
+class FeedDisplay extends StatefulWidget {
   final FeedProps props;
 
   FeedDisplay({required this.props});
 
   @override
+  _FeedDisplayState createState() => _FeedDisplayState();
+}
+
+class  _FeedDisplayState extends State<FeedDisplay> {
+
+
+
+
+  @override
   Widget build(BuildContext context) {
-    String base64ImageWithPrefix = props.image;
+    String base64ImageWithPrefix = widget.props.image;
 
     // Remove the prefix and decode the base64 string into bytes
     String base64Image = base64ImageWithPrefix.split(',').last;
@@ -81,8 +91,8 @@ class FeedDisplay extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(props.name),
-                        Text(props.date),
+                        Text(widget.props.name),
+                        Text(widget.props.date),
                       ],
                     ),
                   ),
@@ -102,7 +112,7 @@ class FeedDisplay extends StatelessWidget {
                 padding: const EdgeInsets.all(5),
                 child: Center(
                   child: Text(
-                    props.content,
+                    widget.props.content,
                     style: const TextStyle(
                       color: blackColor,
                     ),

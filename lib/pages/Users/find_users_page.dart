@@ -23,14 +23,13 @@ class UserIn {
   dynamic id;
   dynamic UserName;
   dynamic email;
-  dynamic password;
+
   dynamic image;
 
   UserIn({
     this.id,
     this.UserName,
     this.email,
-    this.password,
     this.image,
   });
 }

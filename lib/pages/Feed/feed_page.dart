@@ -44,8 +44,6 @@ class FeedPosts {
 class _FeedPageState extends State<FeedPage> {
   int _currentIndex = 3;
   bool _isLoading = false;
-  List<FeedPosts> feedList = [];
-  List<Map<String, String>> feedData = [];
 
   final List<Widget> _pages = [
     const DashBoardPage(),
@@ -54,6 +52,9 @@ class _FeedPageState extends State<FeedPage> {
 
     const NotificationsPage(),
   ];
+
+  List<FeedPosts> feedList = [];
+  List<Map<String, String>> feedData = [];
 
   @override
   void initState() {
@@ -70,17 +71,17 @@ class _FeedPageState extends State<FeedPage> {
     var response = await getfollowingposts(prefs.getString("userId"));
     // print(prefs.getString("image"));
 
-    // print(response);
+    print(response[0]["post"]);
 
     if (response != null) {
       var feedData = response;
-      // print("here"+postData);
+
       feedList = (feedData as List).map((feed) {
         return FeedPosts(
             userName: feed["user"]["UserName"],
             userImage: feed["user"]["image"],
             date: feed["post"]["date"],
-            content: feed["post"]["category"]);
+            content: feed["post"]["post"]);
       }).toList();
     }
     setState(() {
@@ -184,6 +185,7 @@ class _FeedPageState extends State<FeedPage> {
               const SizedBox(
                 height: 20,
               ),
+              Text(_isLoading ? "loading..." : ""),
               Column(
                   children: feedList.length.toInt() == 0
                       ? [

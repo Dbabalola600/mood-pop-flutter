@@ -61,7 +61,7 @@ class _FullFeedPageState extends State<FullFeedPage> {
             userName: feed["user"]["UserName"],
             userImage: feed["user"]["image"],
             date: feed["post"]["date"],
-            content: feed["post"]["category"]);
+            content: feed["post"]["post"]);
       }).toList();
     }
 

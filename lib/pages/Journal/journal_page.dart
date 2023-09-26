@@ -283,6 +283,9 @@ class JournalContentState extends State<JournalContent> {
               height: 15,
             ),
 
+
+
+               Text(_isLoading?"loading...":""),
             // written journals
             Column(
               children: journalList.length.toInt() == 0
