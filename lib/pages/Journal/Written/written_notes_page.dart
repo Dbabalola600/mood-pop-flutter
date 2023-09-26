@@ -39,17 +39,11 @@ class _WrittenNotesPageState extends State<WrittenNotesPage> {
   void initState() {
     super.initState();
     showInfo();
-    loadSharedPreferences();
+
     // Call showInfo when the widget is inserted into the tree.
   }
 
-  Future<void> loadSharedPreferences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      username = prefs.getString("username");
-      userImage = prefs.getString("image");
-    });
-  }
+
 
   Future<void> showInfo() async {
     setState(() {
