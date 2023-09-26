@@ -44,7 +44,7 @@ class _WriteJournalPageState extends State<WriteJournalPage> {
   @override
   Widget build(BuildContext context) {
     void userButtonClick() async {
-   setState(() {
+      setState(() {
         _isLoading = true;
       });
       var response = await createJournal(
@@ -57,7 +57,7 @@ class _WriteJournalPageState extends State<WriteJournalPage> {
       } else {
         print("rerror");
       }
-    setState(() {
+      setState(() {
         _isLoading = false;
       });
     }
@@ -83,7 +83,6 @@ class _WriteJournalPageState extends State<WriteJournalPage> {
         body: SafeArea(
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
-
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Column(
@@ -127,7 +126,7 @@ class _WriteJournalPageState extends State<WriteJournalPage> {
                     children: [
                       AppButton(
                         buttonColour: primaryColor,
-                        text: _isLoading? "Loading...":"Create Note",
+                        text: _isLoading ? "Loading..." : "Create Note",
                         onPress: userButtonClick,
                         isDisabled: isButtonDisabled,
                       ),

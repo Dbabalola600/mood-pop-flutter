@@ -23,9 +23,11 @@ class SoundPlayer {
   }
 
   Future _play(VoidCallback whenFinished) async {
- final Directory dir = await getApplicationCacheDirectory();
+    final Directory dir = await getApplicationCacheDirectory();
     // print(pathToSaveAudio);
-      var newPath = File(join(dir.path, pathToSaveAudio));
+    var newPath = File(join(dir.path, pathToSaveAudio));
+
+    print(newPath);
     await _soundPlayer!
         .startPlayer(fromURI: newPath.path, whenFinished: whenFinished);
   }

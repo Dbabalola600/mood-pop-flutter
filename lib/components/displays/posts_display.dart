@@ -100,22 +100,22 @@ class _PostsDisplayState extends State<PostsDisplay> {
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment
-                          .topRight, // Align the "Delete" icon to the top right
-                      child: GestureDetector(
-                        onTap: () {
-                          // Handle the press event
-                        },
-                        child: const Icon(
-                          Icons.delete,
-                          size: 20,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Expanded(
+                  //   child: Align(
+                  //     alignment: Alignment
+                  //         .topRight, // Align the "Delete" icon to the top right
+                  //     child: GestureDetector(
+                  //       onTap: () {
+                  //         // Handle the press event
+                  //       },
+                  //       child: const Icon(
+                  //         Icons.delete,
+                  //         size: 20,
+                  //         color: Colors.black,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

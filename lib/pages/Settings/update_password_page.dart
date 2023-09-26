@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-
-
+import 'package:get/get.dart';
+import 'package:mood_pop/requests/auth_request.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/displays/app_button.dart';
 
 import '../../components/displays/back_appbar.dart';
 import '../../components/inputs/app_textfield.dart';
 import '../../utils/colours.dart';
+import '../DashBoard/dash_board_page.dart';
 
 class UpdatePasswordPage extends StatefulWidget {
   const UpdatePasswordPage({Key? key}) : super(key: key);
@@ -16,13 +18,46 @@ class UpdatePasswordPage extends StatefulWidget {
 }
 
 class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
- 
   final passwordController = TextEditingController();
- 
+  bool isButtonDisabled = true;
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
+    void userUpdateOnClick() async {
+      setState(() {
+        _isLoading = true;
+      });
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      var response = await updatePassword(
+          password: passwordController.text, id: prefs.getString("userId"));
+      // print(response.toString());
+      if (response["status"].toString() == "200") {
+        Get.to(const DashBoardPage());
+      } else {
+        print("error");
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+    }
+
+    void isTextFieldBlankValidation(String value) {
+      if (passwordController.text.isEmpty) {
+        setState(() {
+          isButtonDisabled = true;
+        });
+      } else {
+        setState(() {
+          isButtonDisabled = false;
+        });
+      }
+    }
+
     return Scaffold(
-      appBar: backButtonAppbar( (){}, "Update Password", secondaryColor),
+      appBar: backButtonAppbar(() {}, "Update Password", secondaryColor),
       backgroundColor: secondaryColor,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -39,24 +74,23 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                     const SizedBox(
                       height: 80,
                     ),
-                 
-                   
                     AppTextField(
                       label: "Password",
                       hint: "Password",
                       key: Key(1.toString()),
                       textController: passwordController,
-                      // onChanged: isTextFieldBlankValidation,
+                      onChanged: isTextFieldBlankValidation,
                     ),
                     const SizedBox(
                       height: 30,
                     ),
-                     AppButton(
-                      text: "Update",
-                      onPress: (){},
+                    AppButton(
+                         text: _isLoading ? "Loading..." : "Update",
+                    
+
                       buttonColour: primaryColor,
-                      // onPress: () => Get.to(const DashBoardPage()),
-                      // isDisabled: isButtonDisabled,
+                      onPress: userUpdateOnClick,
+                      isDisabled: isButtonDisabled,
                     ),
                   ],
                 ),

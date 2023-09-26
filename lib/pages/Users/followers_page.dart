@@ -17,7 +17,6 @@ class _FollowersPageState extends State<FollowersPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: SvgPicture.asset(
@@ -27,29 +26,17 @@ class _FollowersPageState extends State<FollowersPage> {
               height: 200,
             ),
           ),
-
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.0),
             child: Column(
               children: [
                 UserSearchResult(
-                    image: null, name: "name", cilckyText: "Remove"),
-                UserSearchResult(
-                    image: null, name: "name", cilckyText: "Remove"),
-                UserSearchResult(
-                    image: null, name: "name", cilckyText: "Remove"),
-                UserSearchResult(
-                    image: null, name: "name", cilckyText: "Remove"),
-                UserSearchResult(
-                    image: null, name: "name", cilckyText: "Remove"),
-                UserSearchResult(
-                    image: null, name: "name", cilckyText: "Remove"),
-                UserSearchResult(
-                    image: null, name: "name", cilckyText: "Remove"),
-                UserSearchResult(
-                    image: null, name: "name", cilckyText: "Remove"),
-                UserSearchResult(
-                    image: null, name: "name", cilckyText: "Remove"),
+                  props: UserSearchProps(
+                      image: "image",
+                      name: "name",
+                      clicky: () {},
+                      cilckyText: "cilckyText"),
+                )
               ],
             ),
           )

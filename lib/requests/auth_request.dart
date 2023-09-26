@@ -104,7 +104,7 @@ Future searchUser(find) async {
   }
 }
 
-
+//updates
 Future updateUsername({id, UserName}) async {
   Map info = {"_id": id, "UserName":UserName};
   String uri = "$baseUrl/users/UpdateUsername";
@@ -145,7 +145,74 @@ Future updateAvatar({id, image}) async {
 
 
 
+
+Future updatePassword({id, password}) async {
+  Map info = {"_id": id, "password":password};
+  String uri = "$baseUrl/users/UpdatePassword";
+  var body = info;
+  var url = Uri.parse(uri);
+
+  final response = await http.post(url, body: body);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return data;
+  } else if (response.statusCode == 401) {
+    throw Exception("Unauthorized: Invalid credentials");
+  } else {
+    throw Exception(
+        "Failed to make the request. Status code: ${response.statusCode}");
+  }
+}
+
+
+
+
+Future updateEmail({id, email}) async {
+  Map info = {"_id": id, "email":email};
+  String uri = "$baseUrl/users/UpdateEmail";
+  var body = info;
+  var url = Uri.parse(uri);
+
+  final response = await http.post(url, body: body);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return data;
+  } else if (response.statusCode == 401) {
+    throw Exception("Unauthorized: Invalid credentials");
+  } else {
+    throw Exception(
+        "Failed to make the request. Status code: ${response.statusCode}");
+  }
+}
+
 //posts
+
+
+
+Future createPost({userId, title, content}) async {
+  Map info = {"userId": userId, "post": title, "category": content};
+  var body = info;
+
+  String uri = "$baseUrl/post/create";
+
+  var url = Uri.parse(uri);
+
+  final response = await http.post(url, body: body);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return data;
+  } else if (response.statusCode == 401) {
+    throw Exception("Unauthorized: Invalid credentials");
+  } else {
+    throw Exception(
+        "Failed to make the request. Status code: ${response.statusCode}");
+  }
+}
+
+
 
 Future getUserposts(userId) async {
   Map info = {"userId": userId};
@@ -401,7 +468,7 @@ Future getAllRequests(userId) async {
 
   if (response.statusCode == 200) {
     final data = json.decode(response.body);
-    return data;
+    return data["data"];
   } else if (response.statusCode == 401) {
     throw Exception("Unauthorized: Invalid credentials");
   } else {
@@ -410,7 +477,7 @@ Future getAllRequests(userId) async {
   }
 }
 
-Future newRequests(fromId, toId) async {
+Future newRequests({fromId, toId}) async {
   Map info = {"fromId": fromId, "toId": toId};
   var body = info;
 
@@ -491,5 +558,5 @@ Future getFollowers(userId) async {
 }
 
 void main() async {
-  print(await getAudioJournal( "650320061837f590a3b6652c"));
+  print(await newRequests( fromId: "650320061837f590a3b6652c",toId: "6503204a1837f590a3b6653a"));
 }

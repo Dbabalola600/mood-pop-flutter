@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mood_pop/requests/auth_request.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/displays/logged_appbar.dart';
 import '../../components/displays/user_notification.dart';
@@ -8,13 +10,25 @@ import '../../utils/colours.dart';
 import '../DashBoard/dash_board_page.dart';
 import '../Feed/feed_page.dart';
 import '../Journal/journal_page.dart';
-import '../Profile/profile_page.dart';
+
 import '../Resources/resources_page.dart';
 
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({Key? key}) : super(key: key);
   @override
   State<NotificationsPage> createState() => _NotificationsPageState();
+}
+
+class RequestsNotif {
+  final String reqId;
+  final String userName;
+  final String userImage;
+
+  RequestsNotif({
+    required this.reqId,
+    required this.userName,
+    required this.userImage,
+  });
 }
 
 class _NotificationsPageState extends State<NotificationsPage> {
@@ -26,16 +40,63 @@ class _NotificationsPageState extends State<NotificationsPage> {
     const ResourcesPage(),
     const FeedPage(),
 
-    const NotificationContent(),
+    // NotificationContent(),
   ];
+
+  bool _isLoading = false;
+
+  List<RequestsNotif> requestList = [];
+  List<Map<String, String>> requestData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    showInfo();
+  }
+
+  Future<void> showInfo() async {
+    setState(() {
+      _isLoading = true;
+    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Get the user ID from SharedPreferences
+    String? userId = prefs.getString("userId");
+
+    if (userId != null) {
+      var response = await getAllRequests(userId);
+
+      if (response != null) {
+        var requestData = response;
+
+        requestList = (requestData as List).map((request) {
+          return RequestsNotif(
+              reqId: request["peep"]["_id"],
+              userName: request["user"]["UserName"],
+              userImage: request["user"]["image"]);
+        }).toList();
+      }
+      // print(response);
+      setState(() {
+        _isLoading = false;
+      });
+    } else {
+      // Handle the case where userId is null
+
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-        appBar: LoggedAppBar(alertButtonHandler: (){}, appBarTitle: "Notifications"),
-          drawer: AppDrawer(),
+        appBar: LoggedAppBar(
+            alertButtonHandler: () {}, appBarTitle: "Notifications"),
+        drawer: const AppDrawer(),
         backgroundColor: secondaryColor,
         bottomNavigationBar: CustomBottomNavigationBar(
           currentIndex: _currentIndex,
@@ -49,7 +110,54 @@ class _NotificationsPageState extends State<NotificationsPage> {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                child: _pages[_currentIndex], // Display the selected page
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Column(
+                      children: requestList.length.toInt() == 0
+                          ? [
+                              const Center(
+                                child: Text(
+                                  "NO NEW NOTIFICATIONS",
+                                  style: TextStyle(
+                                      color: blackColor,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 20),
+                                ),
+                              ),
+                            ]
+                          : [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Column(
+                                  children: [
+                                    ListView.builder(
+                                      itemCount: requestList.length,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, int index) {
+                                        final info = requestList[index];
+
+                                        return UserNotification(
+                                          props: UserNotificationProps(
+                                              name: requestList[0].userName,
+                                              Acceptclicky: () {},
+                                              Declineclicky: () {},
+                                              image: requestList[0].userImage),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                    ),
+                   
+                  ],
+                ), // Display the selected page
               ),
             ), // Display the selected page
             const Padding(
@@ -66,59 +174,103 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 }
 
-class NotificationContent extends StatelessWidget {
-  const NotificationContent({super.key});
+// class RequestsNotif {
+//   final String reqId;
+//   final String userName;
+//   final String userImage;
 
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-         const Center(
-            child: Text(
-              "NO NEW NOTIFICATIONS",
-              style: TextStyle(
-                  color: blackColor, fontWeight: FontWeight.w400, fontSize: 20),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                UserNotification(
-                  image: null,
-                  name: "name",
-                  Acceptclicky: () => {},
-                  Declineclicky: () => {},
-                ),
-                UserNotification(
-                  image: null,
-                  name: "name",
-                  Acceptclicky: () => {},
-                  Declineclicky: () => {},
-                ),
-                UserNotification(
-                  image: null,
-                  name: "name",
-                  Acceptclicky: () => {},
-                  Declineclicky: () => {},
-                ),
-                UserNotification(
-                  image: null,
-                  name: "name",
-                  Acceptclicky: () => {},
-                  Declineclicky: () => {},
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+//   RequestsNotif({
+//     required this.reqId,
+//     required this.userName,
+//     required this.userImage,
+//   });
+// }
+
+// class NotificationContent extends StatefulWidget {
+//   @override
+//   NotificationContentState createState() => NotificationContentState();
+// }
+
+// class NotificationContentState extends State<NotificationContent> {
+//   bool _isLoading = false;
+
+//   List<RequestsNotif> requestList = [];
+//   List<Map<String, String>> requestData = [];
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     showInfo();
+//   }
+
+//   Future<void> showInfo() async {
+//     setState(() {
+//       _isLoading = true;
+//     });
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+//     // Get the user ID from SharedPreferences
+//     String? userId = prefs.getString("userId");
+
+//     if (userId != null) {
+//       var response = await getAllRequests(userId);
+
+//       if (response != null) {
+//         var requestData = response;
+
+//         requestList = (requestData as List).map((request) {
+//           return RequestsNotif(
+//               reqId: request["peep"]["_id"],
+//               userName: request["user"]["UserName"],
+//               userImage: request["user"]["image"]);
+//         }).toList();
+//       }
+//       print(response);
+//       setState(() {
+//         _isLoading = false;
+//       });
+//     } else {
+//       // Handle the case where userId is null
+
+//       setState(() {
+//         _isLoading = false;
+//       });
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SingleChildScrollView(
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           const SizedBox(
+//             height: 20,
+//           ),
+//           const Center(
+//             child: Text(
+//               "NO NEW NOTIFICATIONS",
+//               style: TextStyle(
+//                   color: blackColor, fontWeight: FontWeight.w400, fontSize: 20),
+//             ),
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: 8.0),
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 UserNotification(
+//                   props: UserNotificationProps(
+//                       name: requestList[0].userName,
+//                       Acceptclicky: () {},
+//                       Declineclicky: () {},
+//                       image: requestList[0].userImage),
+//                 )
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

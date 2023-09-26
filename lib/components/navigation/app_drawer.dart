@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../pages/Journal/write_journal.dart';
 
 import '../../pages/Post/new_post.dart';
 import '../../pages/Profile/profile_page.dart';
+import '../../pages/Resources/seek_help_page.dart';
 import '../../pages/Start/login_page.dart';
 import '../../pages/Users/user_page.dart';
 import '../../utils/colours.dart';
@@ -158,7 +160,7 @@ class _StatefulAppBarState extends State<AppDrawer> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProfilePage(),
+                          builder: (context) => const SeekHelpPage(),
                         ),
                       );
                     },

@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../pages/DashBoard/dash_board_page.dart';
 import '../../pages/Feed/feed_page.dart';
@@ -7,7 +10,10 @@ import '../../pages/Journal/journal_page.dart';
 import '../../pages/Notifications/notifications_page.dart';
 
 import '../../pages/Resources/resources_page.dart';
+import '../../requests/auth_request.dart';
 import '../../utils/colours.dart';
+import 'package:badges/badges.dart' as badges;
+
 
 class CustomBottomNavigationBar extends StatefulWidget {
   final int currentIndex;
@@ -20,12 +26,38 @@ class CustomBottomNavigationBar extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _CustomBottomNavigationBarState createState() =>
       _CustomBottomNavigationBarState();
 }
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
+  dynamic count = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    startShowInfoTimer();
+
+    // Call showInfo when the widget is inserted into the tree.
+  }
+
+  void startShowInfoTimer() {
+    Timer.periodic(const Duration(seconds: 3), (timer) {
+      // Call the showInfo function.
+      showInfo();
+    });
+  }
+
+  Future<void> showInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response = await countNotification(prefs.getString("userId"));
+
+    setState(() {
+      count = response;
+    });
+    // print(count);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -49,7 +81,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             break;
         }
       },
-      items: const [
+      items:  [
         BottomNavigationBarItem(
           icon: Icon(Icons.dashboard),
           label: 'DashBoard',
@@ -67,7 +99,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           label: 'Feed',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.notifications),
+          icon: badges.Badge(
+            badgeContent: Text(count.toString(), style: TextStyle(color: Colors.white)),
+            child: Icon(Icons.notifications),
+          ),
           label: 'Norifications',
         ),
       ],

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -6,6 +8,7 @@ import '../../components/displays/back_appbar.dart';
 import '../../components/displays/user_search_result.dart';
 import '../../requests/auth_request.dart';
 import '../../utils/colours.dart';
+import '../DashBoard/dash_board_page.dart';
 
 class FindUsersPage extends StatefulWidget {
   final String find;
@@ -72,6 +75,29 @@ class _FindUsersPageState extends State<FindUsersPage> {
 
   @override
   Widget build(BuildContext context) {
+    void userButtonClick(dynamic newRec) async {
+      setState(() {
+        _isLoading = true;
+      });
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      var response =
+          await newRequests(fromId: prefs.getString("userId"), toId: newRec);
+
+print(response["status"]);
+      if (response["status"] == 200) {
+        Get.to(DashBoardPage());
+      }
+      if (response["status"] == 202) {
+        Get.to(DashBoardPage());
+      } else {
+        print("error");
+      }
+      setState(() {
+        _isLoading = false;
+      });
+    }
+
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
@@ -113,9 +139,13 @@ class _FindUsersPageState extends State<FindUsersPage> {
                                   itemBuilder: (context, index) {
                                     final info = userList[index];
                                     return UserSearchResult(
-                                        image: null,
-                                        name: info.UserName,
-                                        cilckyText: "Request");
+                                      props: UserSearchProps(
+                                          image: info.image,
+                                          name: info.UserName,
+                                          clicky: () =>
+                                              userButtonClick(info.id),
+                                          cilckyText: _isLoading? "Loading":"Request"),
+                                    );
                                   },
                                 ),
                               ],

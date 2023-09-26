@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-
-
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/displays/app_button.dart';
 
 import '../../components/displays/back_appbar.dart';
 import '../../components/inputs/app_textfield.dart';
+import '../../requests/auth_request.dart';
 import '../../utils/colours.dart';
+import '../DashBoard/dash_board_page.dart';
 
 class UpdateEmailPage extends StatefulWidget {
   const UpdateEmailPage({Key? key}) : super(key: key);
@@ -16,13 +18,47 @@ class UpdateEmailPage extends StatefulWidget {
 }
 
 class _UpdateEmailPageState extends State<UpdateEmailPage> {
- 
   final emailController = TextEditingController();
- 
+  bool isButtonDisabled = true;
+  bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
+    void userUpdateOnClick() async {
+      setState(() {
+        _isLoading = true;
+      });
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      var response = await updateEmail(
+          email: emailController.text, id: prefs.getString("userId"));
+      // print(response.toString());
+      if (response["status"].toString() == "200") {
+        prefs.setString("email", emailController.text);
+
+        Get.to(const DashBoardPage());
+      } else {
+        print("error");
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+    }
+
+    void isTextFieldBlankValidation(String value) {
+      if (emailController.text.isEmpty) {
+        setState(() {
+          isButtonDisabled = true;
+        });
+      } else {
+        setState(() {
+          isButtonDisabled = false;
+        });
+      }
+    }
+
     return Scaffold(
-      appBar: backButtonAppbar( (){}, "Update Email", secondaryColor),
+      appBar: backButtonAppbar(() {}, "Update Email", secondaryColor),
       backgroundColor: secondaryColor,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -39,24 +75,22 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
                     const SizedBox(
                       height: 80,
                     ),
-                 
-                   
                     AppTextField(
                       label: "Email",
                       hint: "Email",
+                      textInputType: TextInputType.emailAddress,
                       key: Key(1.toString()),
                       textController: emailController,
-                      // onChanged: isTextFieldBlankValidation,
+                      onChanged: isTextFieldBlankValidation,
                     ),
                     const SizedBox(
                       height: 30,
                     ),
-                     AppButton(
-                      text: "Update",
-                      onPress: (){},
+                    AppButton(
+                      text: _isLoading ? "Loading..." : "Update",
                       buttonColour: primaryColor,
-                      // onPress: () => Get.to(const DashBoardPage()),
-                      // isDisabled: isButtonDisabled,
+                      onPress: userUpdateOnClick,
+                      isDisabled: isButtonDisabled,
                     ),
                   ],
                 ),
