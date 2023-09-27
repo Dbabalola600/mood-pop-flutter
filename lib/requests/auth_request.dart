@@ -104,6 +104,27 @@ Future searchUser(find) async {
   }
 }
 
+
+Future contactSupport({email, title, details}) async {
+  Map info = {"title": title, "email": email, "details":details};
+  String uri = "$baseUrl/users/contactSupport";
+  var body = info;
+  var url = Uri.parse(uri);
+
+  final response = await http.post(url, body: body);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return data;
+  } else if (response.statusCode == 401) {
+    throw Exception("Unauthorized: Invalid credentials");
+  } else {
+    throw Exception(
+        "Failed to make the request. Status code: ${response.statusCode}");
+  }
+}
+
+
 //updates
 Future updateUsername({id, UserName}) async {
   Map info = {"_id": id, "UserName": UserName};
@@ -545,8 +566,7 @@ Future getFollowers(userId) async {
 }
 
 void main() async {
-  print(await getfollowingposts(
-     "6503204a1837f590a3b6653a"));
+  print(await contactSupport(email: "dami600bab@gmail.com", details: "this is content", title: "the thitle"));
 }
 
 // void main() async {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../components/displays/back_appbar.dart';
+import '../../../components/displays/load_screen.dart';
 import '../../../requests/auth_request.dart';
 import '../../../utils/colours.dart';
 
@@ -47,7 +47,6 @@ class _JournalDetailsPageState extends State<JournalDetailsPage> {
     String? userId = prefs.getString("userId");
     final response = await getNote(userId: userId, noteId: widget.nId);
 
-
     setState(() {
       journInfo?.content = response["content"];
       journInfo?.title = response["title"];
@@ -55,7 +54,7 @@ class _JournalDetailsPageState extends State<JournalDetailsPage> {
       _isLoading = false;
     });
 
-     setState(() {
+    setState(() {
       _isLoading = false;
     });
   }
@@ -71,53 +70,53 @@ class _JournalDetailsPageState extends State<JournalDetailsPage> {
         body: SafeArea(
             child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: InkWell(
-                          onTap: () {},
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(30),
-                              
-                            ),
-                            child: const Column(
-                              mainAxisAlignment: MainAxisAlignment
-                                  .spaceBetween, // Adjust alignment as needed
-                              children: [
-                                Icon(
-                                  Icons.delete,
-                                  color: whiteColor,
+          child: _isLoading
+              ? LoadingScreen()
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  child: const Column(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceBetween, // Adjust alignment as needed
+                                    children: [
+                                      Icon(
+                                        Icons.delete,
+                                        color: whiteColor,
+                                      ),
+                                      Text(
+                                        "Delete", // Add your additional text here
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(color: whiteColor),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                Text(
-                                  "Delete", // Add your additional text here
-                                  textAlign: TextAlign.right,
-                                  style: TextStyle(color: whiteColor),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Text(journInfo?.content ?? " "),
-                    ],
-                  )
-                ]),
-          ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Text(journInfo?.content ?? " "),
+                          ],
+                        )
+                      ]),
+                ),
         )),
       ),
     );

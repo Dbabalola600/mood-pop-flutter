@@ -9,6 +9,7 @@ import '../../components/displays/Buttons/oval_button.dart';
 
 import '../../components/displays/audio_journal_display.dart';
 import '../../components/displays/journal_display.dart';
+import '../../components/displays/load_screen.dart';
 import '../../components/displays/logged_appbar.dart';
 import '../../components/navigation/app_drawer.dart';
 import '../../components/navigation/bottom_navbar.dart';
@@ -223,69 +224,69 @@ class JournalContentState extends State<JournalContent> {
             const SizedBox(
               height: 20,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Column(
-                        children: [
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Your Notes",
-                              style:
-                                  TextStyle(color: primaryColor, fontSize: 18),
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Container(
-                            height: 4,
-                            width: 120,
-                            decoration: BoxDecoration(
-                              color: primaryColor,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () => {Get.to(const WrittenNotesPage())},
-                        child: const Row(
+
+            _isLoading
+                ? LoadingScreen()
+                : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
                           children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "View All",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: primaryColor,
+                            Column(
+                              children: [
+                                const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Your Notes",
+                                    style: TextStyle(
+                                        color: primaryColor, fontSize: 18),
+                                  ),
                                 ),
+                                const SizedBox(height: 2),
+                                Container(
+                                  height: 4,
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                    color: primaryColor,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Spacer(),
+                            GestureDetector(
+                              onTap: () => {Get.to(const WrittenNotesPage())},
+                              child: const Row(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "View All",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: primaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.read_more,
+                                    color: primaryColor,
+                                    size: 12,
+                                  ),
+                                ],
                               ),
-                            ),
-                            Icon(
-                              Icons.read_more,
-                              color: primaryColor,
-                              size: 12,
-                            ),
+                            )
                           ],
                         ),
-                      )
-                    ],
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
             const SizedBox(
               height: 15,
             ),
 
-
-
-               Text(_isLoading?"loading...":""),
             // written journals
             Column(
               children: journalList.length.toInt() == 0

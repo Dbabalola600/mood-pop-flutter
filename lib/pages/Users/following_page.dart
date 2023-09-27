@@ -4,6 +4,7 @@ import 'package:mood_pop/components/displays/user_search_result.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/displays/back_appbar.dart';
+import '../../components/displays/load_screen.dart';
 import '../../requests/auth_request.dart';
 import '../../utils/colours.dart';
 
@@ -14,9 +15,9 @@ class FollowingPage extends StatefulWidget {
 }
 
 class Following {
- dynamic username;
+  dynamic username;
   dynamic userImage;
- dynamic userId;
+  dynamic userId;
 
   Following(
       {required this.username, required this.userImage, required this.userId});
@@ -66,37 +67,39 @@ class _FollowingPageState extends State<FollowingPage> {
       child: Scaffold(
         appBar: backButtonAppbar(() => null, "Following", secondaryColor),
         backgroundColor: secondaryColor,
-        body: Column(
-          children: [
-            if (followingList.isEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: SvgPicture.asset(
-                  "assets/Empty/People1.svg",
-                  alignment: Alignment.center,
-                  width: 100,
-                  height: 200,
-                ),
+        body: _isLoading
+            ? LoadingScreen()
+            : Column(
+                children: [
+                  if (followingList.isEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: SvgPicture.asset(
+                        "assets/Empty/People1.svg",
+                        alignment: Alignment.center,
+                        width: 100,
+                        height: 200,
+                      ),
+                    ),
+                  if (followingList.isNotEmpty)
+                    Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        itemCount: followingList.length,
+                        itemBuilder: (context, index) {
+                          final info = followingList[index];
+                          return UserSearchResult(
+                            props: UserSearchProps(
+                                image: info.userImage,
+                                name: info.username,
+                                clicky: () {},
+                                cilckyText: "Remove"),
+                          );
+                        },
+                      ),
+                    )
+                ],
               ),
-            if (followingList.isNotEmpty)
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  itemCount: followingList.length,
-                  itemBuilder: (context, index) {
-                    final info = followingList[index];
-                    return UserSearchResult(
-                      props: UserSearchProps(
-                          image: info.userImage,
-                          name: info.username,
-                          clicky: () {},
-                          cilckyText: "Remove"),
-                    );
-                  },
-                ),
-              )
-          ],
-        ),
       ),
     );
   }

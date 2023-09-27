@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../components/displays/audio_journal_display.dart';
 import '../../../components/displays/back_appbar.dart';
 
+import '../../../components/displays/load_screen.dart';
 import '../../../requests/auth_request.dart';
 import '../../../utils/colours.dart';
 
@@ -97,36 +98,38 @@ class _AudioNotesPageState extends State<AudioNotesPage> {
       child: Scaffold(
         appBar: backButtonAppbar(() => null, "Audio Notes", secondaryColor),
         backgroundColor: secondaryColor,
-        body: Column(
-          children: [
-            if (journalList.isEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: SvgPicture.asset(
-                  "assets/Empty/BlankNote.svg",
-                  alignment: Alignment.center,
-                  width: 100,
-                  height: 300,
-                ),
-              ),
-            if (journalList.isNotEmpty)
-              Expanded(
-                child: ListView.builder(
-                  itemCount: journalList.length,
-                  itemBuilder: (context, index) {
-                    final info = journalList[index];
-                    return AudioJournalDisplay(
-                      props: AudioJournalProps(
-                        date: info.date,
-                        title: info.title,
-                        nId: info.id,
+        body: _isLoading
+            ? LoadingScreen()
+            : Column(
+                children: [
+                  if (journalList.isEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: SvgPicture.asset(
+                        "assets/Empty/BlankNote.svg",
+                        alignment: Alignment.center,
+                        width: 100,
+                        height: 300,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  if (journalList.isNotEmpty)
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: journalList.length,
+                        itemBuilder: (context, index) {
+                          final info = journalList[index];
+                          return AudioJournalDisplay(
+                            props: AudioJournalProps(
+                              date: info.date,
+                              title: info.title,
+                              nId: info.id,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                ],
               ),
-          ],
-        ),
       ),
     );
   }

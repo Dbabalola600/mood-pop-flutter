@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/displays/Buttons/oval_button.dart';
 import '../../components/displays/feed_display.dart';
+import '../../components/displays/load_screen.dart';
 import '../../components/displays/logged_appbar.dart';
 
 import '../../components/navigation/app_drawer.dart';
@@ -71,7 +72,7 @@ class _FeedPageState extends State<FeedPage> {
     var response = await getfollowingposts(prefs.getString("userId"));
     // print(prefs.getString("image"));
 
-    print(response[0]["post"]);
+    // print(response);
 
     if (response != null) {
       var feedData = response;
@@ -185,47 +186,49 @@ class _FeedPageState extends State<FeedPage> {
               const SizedBox(
                 height: 20,
               ),
-              Text(_isLoading ? "loading..." : ""),
-              Column(
-                  children: feedList.length.toInt() == 0
-                      ? [
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: SvgPicture.asset(
-                              "assets/Empty/BlankFeed.svg",
-                              alignment: Alignment.center,
-                              width: 100,
-                              height: 300,
-                            ),
-                          ),
-                        ]
-                      : [
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Column(
-                              children: [
-                                ListView.builder(
-                                  itemCount:
-                                      feedList.length > 3 ? 3 : feedList.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, int index) {
-                                    final info = feedList[index];
-
-                                    return FeedDisplay(
-                                      props: FeedProps(
-                                          content: info.content,
-                                          date: info.date,
-                                          name: info.userName,
-                                          image: info.userImage),
-                                    );
-                                  },
+              _isLoading
+                  ? LoadingScreen()
+                  : Column(
+                      children: feedList.length.toInt() == 0
+                          ? [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0),
+                                child: SvgPicture.asset(
+                                  "assets/Empty/BlankFeed.svg",
+                                  alignment: Alignment.center,
+                                  width: 100,
+                                  height: 300,
                                 ),
-                              ],
-                            ),
-                          )
-                        ]),
+                              ),
+                            ]
+                          : [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Column(
+                                  children: [
+                                    ListView.builder(
+                                      itemCount: feedList.length > 3
+                                          ? 3
+                                          : feedList.length,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, int index) {
+                                        final info = feedList[index];
+
+                                        return FeedDisplay(
+                                          props: FeedProps(
+                                              content: info.content,
+                                              date: info.date,
+                                              name: info.userName,
+                                              image: info.userImage),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ]),
             ],
           ),
         ),

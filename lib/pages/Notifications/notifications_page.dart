@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../components/displays/load_screen.dart';
 import '../../components/displays/logged_appbar.dart';
 import '../../components/displays/user_notification.dart';
 import '../../components/navigation/app_drawer.dart';
@@ -133,70 +134,74 @@ class _NotificationsPageState extends State<NotificationsPage> {
             });
           },
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Column(
-                      children: requestList.length.toInt() == 0
-                          ? [
-                              const Center(
-                                child: Text(
-                                  "NO NEW NOTIFICATIONS",
-                                  style: TextStyle(
-                                      color: blackColor,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 20),
-                                ),
-                              ),
-                            ]
-                          : [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Column(
-                                  children: [
-                                    ListView.builder(
-                                      itemCount: requestList.length,
-                                      shrinkWrap: true,
-                                      itemBuilder: (context, int index) {
-                                        final info = requestList[index];
-
-                                        return UserNotification(
-                                          props: UserNotificationProps(
-                                              name: info.userName,
-                                              Acceptclicky: () => acceptClick(
-                                                  followId: info.userId,
-                                                  reqId: info.reqId),
-                                              Declineclicky: () {},
-                                              image: info.userImage),
-                                        );
-                                      },
+        body: _isLoading
+            ? LoadingScreen()
+            : Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Column(
+                            children: requestList.length.toInt() == 0
+                                ? [
+                                    const Center(
+                                      child: Text(
+                                        "NO NEW NOTIFICATIONS",
+                                        style: TextStyle(
+                                            color: blackColor,
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 20),
+                                      ),
                                     ),
+                                  ]
+                                : [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: Column(
+                                        children: [
+                                          ListView.builder(
+                                            itemCount: requestList.length,
+                                            shrinkWrap: true,
+                                            itemBuilder: (context, int index) {
+                                              final info = requestList[index];
+
+                                              return UserNotification(
+                                                props: UserNotificationProps(
+                                                    name: info.userName,
+                                                    Acceptclicky: () =>
+                                                        acceptClick(
+                                                            followId:
+                                                                info.userId,
+                                                            reqId: info.reqId),
+                                                    Declineclicky: () {},
+                                                    image: info.userImage),
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    )
                                   ],
-                                ),
-                              )
-                            ],
+                          ),
+                        ],
+                      ), // Display the selected page
                     ),
-                  ],
-                ), // Display the selected page
+                  ), // Display the selected page
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                    ),
+                  ),
+                ],
               ),
-            ), // Display the selected page
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

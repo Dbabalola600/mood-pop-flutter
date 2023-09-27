@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/displays/back_appbar.dart';
+import '../../components/displays/load_screen.dart';
 import '../../components/displays/user_search_result.dart';
 import '../../components/inputs/search_bar.dart';
 import '../../components/navigation/app_drawer.dart';
@@ -101,7 +102,11 @@ class _UsersPageState extends State<UsersPage> {
         body: SafeArea(
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            child: Padding(
+            child: 
+             _isLoading
+              ? LoadingScreen()
+              : 
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -9,6 +9,7 @@ import '../../../components/displays/journal_display.dart';
 import '../../../requests/auth_request.dart';
 import '../../../utils/colours.dart';
 import '../../components/displays/feed_display.dart';
+import '../../components/displays/load_screen.dart';
 
 class FullFeedPage extends StatefulWidget {
   const FullFeedPage({Key? key}) : super(key: key);
@@ -79,13 +80,17 @@ class _FullFeedPageState extends State<FullFeedPage> {
       child: Scaffold(
         appBar: backButtonAppbar(() => null, "FEED", secondaryColor),
         backgroundColor: secondaryColor,
-        body: Column(
+        body: 
+         _isLoading
+              ? LoadingScreen()
+              :
+        Column(
           children: [
             if (feedList.isEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: SvgPicture.asset(
-                  "assets/Empty/BlankNote.svg",
+                  "assets/Empty/BlankFeed.svg",
                   alignment: Alignment.center,
                   width: 100,
                   height: 300,
