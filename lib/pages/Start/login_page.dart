@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../components/displays/app_alert_dialogue.dart';
 import '../../components/displays/app_button.dart';
 import '../../components/displays/back_appbar.dart';
 import '../../components/displays/basic_appbar.dart';
@@ -31,51 +32,80 @@ class _LoginPageState extends State<LoginPage> {
   bool isButtonDisabled = true;
   bool _isLoading = false;
 
+  bool showError = false;
+
+  void showLoginErrorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AppAlertDialogue(
+          title: 'Error Logging in',
+          content: 'Incorrect email or password',
+          contentColor: primaryColor,
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                setState(() {
+                  showError = false; // Set showError to false when closing
+                });
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void userLoginOnClick() async {
+    setState(() {
+      _isLoading = true;
+    });
+    var response = await loginUserWithUsernameAndPassword(
+        loginIdController.text, passwordTextController.text);
+
+    if (response["status"] == 200) {
+      var userId = response["data"]["_id"];
+      var email = response["data"]["email"];
+      var username = response["data"]["UserName"];
+      var image = response["data"]["image"];
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("userId", userId);
+      prefs.setString("email", email);
+      prefs.setString("username", username);
+      prefs.setString("image", image);
+      // print(prefs.getString("userId"));
+
+      Get.to(const DashBoardPage());
+    } else {
+      setState(() {
+        showError = true;
+      });
+      // ignore: use_build_context_synchronously
+      showLoginErrorDialog(context);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void isTextFieldBlankValidation(String value) {
+    if (loginIdController.text.isEmpty || passwordTextController.text.isEmpty) {
+      setState(() {
+        isButtonDisabled = true;
+      });
+    } else {
+      setState(() {
+        isButtonDisabled = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    void userLoginOnClick() async {
-      setState(() {
-        _isLoading = true;
-      });
-      var response = await loginUserWithUsernameAndPassword(
-          loginIdController.text, passwordTextController.text);
-
-      if (response["status"] == 200) {
-        var userId = response["data"]["_id"];
-        var email = response["data"]["email"];
-        var username = response["data"]["UserName"];
-          var image = response["data"]["image"];
-        
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString("userId", userId);
-        prefs.setString("email", email);
-        prefs.setString("username", username);
-        prefs.setString("image", image);
-        // print(prefs.getString("userId"));
-
-        Get.to(const DashBoardPage());
-      } else {
-        print("incorrect");
-      }
-
-      setState(() {
-        _isLoading = false;
-      });
-    }
-
-    void isTextFieldBlankValidation(String value) {
-      if (loginIdController.text.isEmpty ||
-          passwordTextController.text.isEmpty) {
-        setState(() {
-          isButtonDisabled = true;
-        });
-      } else {
-        setState(() {
-          isButtonDisabled = false;
-        });
-      }
-    }
-
     return Scaffold(
       appBar: backButtonAppbar(() {}, "Welcome Back", whiteColor),
       body: SafeArea(
@@ -93,13 +123,14 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(
                       height: 80,
                     ),
-                    SvgPicture.asset("assets/logos/mood.svg",
-                        semanticsLabel: 'Mood Logo'),
-                    const SizedBox(
-                      height: 40,
-                    ),
+
+
+                    
+
+                      
+
                     const Text(
-                      "Use your email address, phone number or account number as your login id",
+                      "Use your email address or username and password",
                       style: TextStyle(
                         color: greyColor,
                         fontSize: 17,

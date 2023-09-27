@@ -18,10 +18,18 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   TextEditingController _searchController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    void onserach() {
-      Get.to(FindUsersPage( _searchController.text));
+  void initState() {
+    super.initState();
+    _searchController
+        .clear(); // Clear the text field when the widget is initialized
+  }
+  void onSearch(String query) {
+      Get.to(FindUsersPage(query));
     }
+
+  @override
+  Widget build(BuildContext context) {
+    
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.0),
@@ -38,7 +46,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
               // onPressed: () {
               //   widget.onSearch(_searchController.text);
               // },
-              onPressed: () => onserach(),
+              onPressed: () => onSearch(_searchController.text),
             ),
             Expanded(
               child: TextField(
@@ -47,8 +55,12 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                   hintText: 'Search...',
                   border: InputBorder.none,
                 ),
+                // onSubmitted: (query) {
+                //   widget.onSearch(query);
+                // },
+
                 onSubmitted: (query) {
-                  widget.onSearch(query);
+                  onSearch(query); // Call onSearch function with the query
                 },
               ),
             ),

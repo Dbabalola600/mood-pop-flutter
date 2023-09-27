@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mood_pop/components/displays/load_screen.dart';
 import 'package:mood_pop/pages/DashBoard/dash_post_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../components/displays/app_alert_dialogue.dart';
 import '../../components/displays/logged_appbar.dart';
 import '../../components/displays/posts_display.dart';
 import '../../components/inputs/search_bar.dart';
@@ -116,128 +118,132 @@ class _DashBoardPageState extends State<DashBoardPage> {
             });
           },
         ),
-         body: SingleChildScrollView( // Wrap your entire screen with SingleChildScrollView
-        child: Column(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.0),
-                  child: Row(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          //  user?.UserName ?? 'User',
-                          username ?? "user",
-                          style: const TextStyle(
-                            fontSize: 20,
-                            color: primaryColor,
+        body: SingleChildScrollView(
+          // Wrap your entire screen with SingleChildScrollView
+          child: Column(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Row(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            //  user?.UserName ?? 'User',
+                            username ?? "user",
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: primaryColor,
+                            ),
                           ),
                         ),
-                      ),
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          Clipboard.setData(ClipboardData(text: textToCopy));
-                        },
-                        child: const Row(
-                          children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Share Profile",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: primaryColor,
+                        const Spacer(),
+                        GestureDetector(
+                          onTap: () {
+                            Clipboard.setData(ClipboardData(text: textToCopy));
+                          },
+                          child: const Row(
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Share Profile",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: primaryColor,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Icon(
-                              Icons.share,
-                              color: primaryColor,
-                              size: 12,
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
+                              Icon(
+                                Icons.share,
+                                color: primaryColor,
+                                size: 12,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Center(
-                  child: CustomSearchBar(
-                    onSearch: (query) {},
+                  const SizedBox(
+                    height: 10,
                   ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Your posts",
-                          style: TextStyle(color: primaryColor, fontSize: 18),
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Container(
-                        height: 4,
-                        width: 120,
-                        decoration: BoxDecoration(
-                          color: primaryColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ],
+                  Center(
+                    child: CustomSearchBar(
+                      onSearch: (query) {},
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Column(
-                  children: [
-                    if (postList.isEmpty)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: SvgPicture.asset(
-                          "assets/Empty/Blankcontent.svg",
-                          alignment: Alignment.center,
-                          width: 200,
-                          height: 300,
-                        ),
-                      ),
-                    if (postList.isNotEmpty)
-                      ListView.builder(
-                        itemCount: postList.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context,  index) {
-                          final info = postList[index];
 
-                          return PostsDisplay(
-                            props: FeedProps(
-                                content: info.post,
-                                date: info.date,
-                                name: username ?? "user",
-                                image: userImage),
-                          );
-                        },
-                      ),
-                  ],
-                ),
-              ],
-            ),
-          ],
+                  LoadingScreen(),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Your posts",
+                            style: TextStyle(color: primaryColor, fontSize: 18),
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Container(
+                          height: 4,
+                          width: 120,
+                          decoration: BoxDecoration(
+                            color: primaryColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  
+                  Column(
+                    children: [
+                      if (postList.isEmpty)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: SvgPicture.asset(
+                            "assets/Empty/Blankcontent.svg",
+                            alignment: Alignment.center,
+                            width: 200,
+                            height: 300,
+                          ),
+                        ),
+                      if (postList.isNotEmpty)
+                        ListView.builder(
+                          itemCount: postList.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            final info = postList[index];
+
+                            return PostsDisplay(
+                              props: FeedProps(
+                                  content: info.post,
+                                  date: info.date,
+                                  name: username ?? "user",
+                                  image: userImage),
+                            );
+                          },
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }

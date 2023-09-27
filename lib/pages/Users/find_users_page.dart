@@ -23,7 +23,6 @@ class UserIn {
   dynamic id;
   dynamic UserName;
   dynamic email;
-
   dynamic image;
 
   UserIn({
@@ -51,7 +50,7 @@ class _FindUsersPageState extends State<FindUsersPage> {
     });
 
     var response = await searchUser(widget.find);
-
+// print(response);
     if (response != null) {
       var userData = response;
       // print("here"+postData);

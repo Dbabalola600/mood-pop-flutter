@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../components/displays/app_alert_dialogue.dart';
 import '../../components/displays/app_button.dart';
 
 import '../../components/displays/back_appbar.dart';
@@ -24,6 +25,33 @@ class _NewPostPageState extends State<NewPostPage> {
   // page state
   bool isButtonDisabled = true;
   bool _isLoading = false;
+
+  bool showError = false;
+
+  void showLoginErrorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AppAlertDialogue(
+          title: 'Unknown Error',
+          content: 'An error occured try again later',
+          contentColor: primaryColor,
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                setState(() {
+                  showError = false; // Set showError to false when closing
+                });
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     void userButtonClick() async {
@@ -40,7 +68,11 @@ class _NewPostPageState extends State<NewPostPage> {
       if (response["status"] == 200) {
         Get.to(const DashBoardPage());
       } else {
-        print("rerror");
+        setState(() {
+          showError = true;
+        });
+        // ignore: use_build_context_synchronously
+        showLoginErrorDialog(context);
       }
       setState(() {
         _isLoading = false;

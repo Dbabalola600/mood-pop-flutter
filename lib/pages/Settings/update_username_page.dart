@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../components/displays/app_alert_dialogue.dart';
 import '../../components/displays/app_button.dart';
 
 import '../../components/displays/back_appbar.dart';
@@ -23,7 +24,31 @@ class _UpdateUsernamePageState extends State<UpdateUsernamePage> {
   // page state
   bool isButtonDisabled = true;
   bool _isLoading = false;
+bool showError = false;
 
+  void showLoginErrorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AppAlertDialogue(
+          title: 'Unknown Error',
+          content: 'An error occured try again later',
+          contentColor: primaryColor,
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                setState(() {
+                  showError = false; // Set showError to false when closing
+                });
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     void userUpdateOnClick() async {
@@ -39,7 +64,11 @@ class _UpdateUsernamePageState extends State<UpdateUsernamePage> {
         prefs.setString("username", usernameController.text);
         Get.to(const DashBoardPage());
       } else {
-        print("error");
+      setState(() {
+          showError = true;
+        });
+        // ignore: use_build_context_synchronously
+        showLoginErrorDialog(context);
       }
 
       setState(() {
