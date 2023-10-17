@@ -18,6 +18,7 @@ void main() {
   runApp(const MainApp());
 }
 
+//splash screen
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
@@ -90,7 +91,7 @@ class _MainAppState extends State<MainApp> {
           return snapshot.data ??
               Container(); // Return a default widget if data is null
         } else {
-          return CircularProgressIndicator(); // Show a loading indicator while checking
+          return const CircularProgressIndicator(); // Show a loading indicator while checking
         }
       },
     );
