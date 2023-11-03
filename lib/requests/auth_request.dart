@@ -45,8 +45,7 @@ Future loginUserWithUsernameAndPassword(UserName, password) async {
     "UserName": UserName,
     "password": password,
   };
-//  String body = xformurlencoder(loginInfo);
-  // var body = json.encode(loginInfo);
+
   var body = loginInfo;
 
   String uri = "$baseUrl/users/login";
@@ -104,9 +103,8 @@ Future searchUser(find) async {
   }
 }
 
-
 Future contactSupport({email, title, details}) async {
-  Map info = {"title": title, "email": email, "details":details};
+  Map info = {"title": title, "email": email, "details": details};
   String uri = "$baseUrl/users/contactSupport";
   var body = info;
   var url = Uri.parse(uri);
@@ -123,7 +121,6 @@ Future contactSupport({email, title, details}) async {
         "Failed to make the request. Status code: ${response.statusCode}");
   }
 }
-
 
 //updates
 Future updateUsername({id, UserName}) async {
@@ -565,9 +562,53 @@ Future getFollowers(userId) async {
   }
 }
 
-void main() async {
-  print(await contactSupport(email: "dami600bab@gmail.com", details: "this is content", title: "the thitle"));
+//token
+
+Future resetPasswordTokenSend(email) async {
+  Map tokenInfo = {"email": email};
+
+  var body = tokenInfo;
+
+  String uri = "$baseUrl/token/resetPassEmail";
+  var url = Uri.parse(uri);
+
+  final response = await http.post(url, body: body);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return data;
+  } else if (response.statusCode == 401) {
+    throw Exception("Unauthorized: Invalid credentials");
+  } else {
+    throw Exception(
+        "Failed to make the request. Status code: ${response.statusCode}");
+  }
 }
+
+Future validateResetPasswordToken({token, userId}) async {
+  Map tokenInfo = {"token": token, "userId": userId};
+
+  var body = tokenInfo;
+
+  String uri = "$baseUrl/token/VerifyEmail";
+  var url = Uri.parse(uri);
+
+  final response = await http.post(url, body: body);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return data;
+  } else if (response.statusCode == 401) {
+    throw Exception("Unauthorized: Invalid credentials");
+  } else {
+    throw Exception(
+        "Failed to make the request. Status code: ${response.statusCode}");
+  }
+}
+
+// void main() async {
+//   print(await resetPasswordTokenSend("dami600bab@gmail.com"));
+// }
 
 // void main() async {
 //   print(await newRequests(fromId:  "650320061837f590a3b6652c",toId: "6503204a1837f590a3b6653a"));
