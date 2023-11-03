@@ -22,7 +22,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
   final passwordController = TextEditingController();
   bool isButtonDisabled = true;
   bool _isLoading = false;
-bool showError = false;
+  bool showError = false;
 
   void showLoginErrorDialog(BuildContext context) {
     showDialog(
@@ -47,6 +47,7 @@ bool showError = false;
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     void userUpdateOnClick() async {
@@ -61,7 +62,7 @@ bool showError = false;
       if (response["status"].toString() == "200") {
         Get.to(const DashBoardPage());
       } else {
-    setState(() {
+        setState(() {
           showError = true;
         });
         // ignore: use_build_context_synchronously
@@ -114,9 +115,7 @@ bool showError = false;
                       height: 30,
                     ),
                     AppButton(
-                         text: _isLoading ? "Loading..." : "Update",
-                    
-
+                      text: _isLoading ? "Loading..." : "Update",
                       buttonColour: primaryColor,
                       onPress: userUpdateOnClick,
                       isDisabled: isButtonDisabled,

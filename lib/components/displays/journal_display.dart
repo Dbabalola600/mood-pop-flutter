@@ -3,18 +3,12 @@ import 'package:get/get.dart';
 
 import '../../pages/Journal/Written/journal_details.dart';
 
-
-
 class JournalProps {
   final dynamic title;
   final dynamic date;
   final dynamic nId;
 
-  JournalProps({
-    required this.title,
-    required this.date,
-    required this.nId
-  });
+  JournalProps({required this.title, required this.date, required this.nId});
 }
 
 class JournalDisplay extends StatelessWidget {
@@ -25,7 +19,7 @@ class JournalDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap:()=> Get.to( JournalDetailsPage(props.nId)),
+      onTap: () => Get.to(JournalDetailsPage(props.nId)),
       child: Padding(
         padding: const EdgeInsets.symmetric(
             horizontal: 10), // Add horizontal padding
@@ -36,7 +30,8 @@ class JournalDisplay extends StatelessWidget {
               Container(
                 decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                    borderRadius: BorderRadius.all(Radius.circular(20))
+                    ),
                 margin: const EdgeInsets.only(bottom: 2),
                 child: Row(
                   children: [
