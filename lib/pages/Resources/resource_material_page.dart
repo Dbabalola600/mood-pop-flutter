@@ -15,7 +15,7 @@ class _ResourceMaterialPageState extends State<ResourceMaterialPage> {
     return WillPopScope(
         onWillPop: () => Future.value(false),
         child: Scaffold(
-            appBar: backButtonAppbar(() {}, "ResourceMaterialPage", secondaryColor),
+            appBar: backButtonAppbar(() {}, "Resource Materials", secondaryColor),
             backgroundColor: secondaryColor,
             body: const SafeArea(
               child: SingleChildScrollView(

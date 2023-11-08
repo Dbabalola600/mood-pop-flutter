@@ -326,8 +326,6 @@ Future getJournal(userId) async {
 }
 
 Future getNote({userId, noteId}) async {
-  // Map info = {"userId": userId , "Nid": noteId};
-  // var body = info;
 
   String uri = "$baseUrl/journal/getNote?userId=$userId&Nid=$noteId";
 
@@ -346,7 +344,7 @@ Future getNote({userId, noteId}) async {
   }
 }
 
-Future deleteNote(userId, noteId) async {
+Future deleteNote({userId, noteId}) async {
   Map info = {"userId": userId, "Nid": noteId};
   var body = info;
 
@@ -424,6 +422,28 @@ Future getAudioNote({userId, noteId}) async {
   if (response.statusCode == 200) {
     final data = json.decode(response.body);
     return data["data"];
+  } else if (response.statusCode == 401) {
+    throw Exception("Unauthorized: Invalid credentials");
+  } else {
+    throw Exception(
+        "Failed to make the request. Status code: ${response.statusCode}");
+  }
+}
+
+
+Future deleteAudioNote({userId, noteId}) async {
+  Map info = {"userId": userId, "Nid": noteId};
+  var body = info;
+
+  String uri = "$baseUrl/audio/DelNote";
+
+  var url = Uri.parse(uri);
+
+  final response = await http.post(url, body: body);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return data;
   } else if (response.statusCode == 401) {
     throw Exception("Unauthorized: Invalid credentials");
   } else {

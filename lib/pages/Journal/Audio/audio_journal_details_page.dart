@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../components/displays/app_decision_alert_dialogue.dart';
 import '../../../components/displays/back_appbar.dart';
 import '../../../components/displays/load_screen.dart';
 import '../../../requests/auth_request.dart';
 import '../../../utils/colours.dart';
 import '../Sound_Player/player_timer.dart';
 import '../Sound_Player/saved_player.dart';
+import '../journal_page.dart';
 
 class AudioJournalDetailsPage extends StatefulWidget {
   final String nId;
@@ -32,8 +35,12 @@ class AudioJournal {
 
 class _AudioJournalDetailsPageState extends State<AudioJournalDetailsPage> {
   bool _isLoading = false;
+    bool showError = false;
   AudioJournal? journInfo =
       AudioJournal(id: "id", date: "date", content: "content", title: "title");
+  
+  
+  
   final timerController = PlayerTimerController();
   final player = SavedSoundPlayer(newUri: null);
 
@@ -47,7 +54,6 @@ class _AudioJournalDetailsPageState extends State<AudioJournalDetailsPage> {
   @override
   void dispose() {
     player.dispose();
-
     super.dispose();
   }
 
@@ -69,11 +75,67 @@ class _AudioJournalDetailsPageState extends State<AudioJournalDetailsPage> {
       _isLoading = false;
     });
 
-    // print(journInfo?.content);
-
     player.newUri = journInfo?.content;
 
     await player.playAudioFromBase64();
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+
+
+  void showLoginErrorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AppADecisionlertDialogue(
+          onTap: () => {userDelete ()},
+          title: 'Are you sure you wish to delete',
+          content: '',
+          contentColor: primaryColor,
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                setState(() {
+                  showError = false; // Set showError to false when closing
+                });
+              },
+              child: const Text('Yes'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                setState(() {
+                  showError = false; // Set showError to false when closing
+                });
+              },
+              child: const Text('No'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+
+  void userDelete() async {
+    setState(() {
+      _isLoading = true;
+    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Get the user ID from SharedPreferences
+    String? userId = prefs.getString("userId");
+    var response = await deleteAudioNote(userId: userId, noteId: widget.nId);
+    
+
+    
+    if (response["status"] == 200) {
+      Get.to( const JournalPage());
+    }
 
     setState(() {
       _isLoading = false;
@@ -110,7 +172,12 @@ class _AudioJournalDetailsPageState extends State<AudioJournalDetailsPage> {
                             Align(
                               alignment: Alignment.centerRight,
                               child: InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                   setState(() {
+                                    showError = true;
+                                  });
+                                  showLoginErrorDialog(context);
+                                },
                                 child: Container(
                                   padding: const EdgeInsets.all(10),
                                   width: 100,
