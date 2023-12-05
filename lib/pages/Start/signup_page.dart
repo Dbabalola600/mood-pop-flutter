@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/svg.dart';
 import 'package:mood_pop/requests/auth_request.dart';
+import '../../components/displays/app_alert_dialogue.dart';
 import '../../components/displays/app_button.dart';
 import '../../components/displays/back_appbar.dart';
 import '../../components/inputs/app_textfield.dart';
@@ -23,6 +24,55 @@ class _SingUpPageState extends State<SingUpPage> {
 
   final userNameController = TextEditingController();
   final emailTextController = TextEditingController();
+  bool showError = false;
+
+  void showLoginErrorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AppAlertDialogue(
+          title: 'ERROR',
+          content: 'Email or Username already in use',
+          contentColor: primaryColor,
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                setState(() {
+                  showError = false; // Set showError to false when closing
+                });
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showLoginErrorDialog2(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AppAlertDialogue(
+          title: 'ERROR',
+          content: 'something wrong went wrong try again later',
+          contentColor: primaryColor,
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                setState(() {
+                  showError = false; // Set showError to false when closing
+                });
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   // page state
   bool isButtonDisabled = true;
@@ -39,12 +89,24 @@ class _SingUpPageState extends State<SingUpPage> {
           password: passwordTextController.text,
           email: emailTextController.text);
       if (response["status"] == 256 || response["status"] == 257) {
-        print("user exists");
+
+        //USER EXISTS
+        setState(() {
+          showError = true;
+        });
+        // ignore: use_build_context_synchronously
+        showLoginErrorDialog(context);
       }
       if (response["status"] == 200) {
         Get.to(const LoginPage());
       } else {
         print("error");
+
+         setState(() {
+          showError = true;
+        });
+        // ignore: use_build_context_synchronously
+        showLoginErrorDialog2(context);
       }
 
       setState(() {
@@ -71,7 +133,6 @@ class _SingUpPageState extends State<SingUpPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Column(
@@ -147,7 +208,7 @@ class _SingUpPageState extends State<SingUpPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     AppButton(
-                      text: _isLoading? "Loading...":"Create Account",
+                      text: _isLoading ? "Loading..." : "Create Account",
                       onPress: userCreateOnClick,
                       buttonColour: primaryColor,
                       isDisabled: isButtonDisabled,

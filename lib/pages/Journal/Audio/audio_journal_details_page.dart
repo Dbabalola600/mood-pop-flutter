@@ -131,7 +131,7 @@ class _AudioJournalDetailsPageState extends State<AudioJournalDetailsPage> {
     String? userId = prefs.getString("userId");
     var response = await deleteAudioNote(userId: userId, noteId: widget.nId);
     
-
+// print(response);
     
     if (response["status"] == 200) {
       Get.to( const JournalPage());
