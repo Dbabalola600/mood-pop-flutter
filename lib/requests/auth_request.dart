@@ -16,6 +16,26 @@ String xformurlencoder(Map<dynamic, dynamic> bodyFields) {
   return encodedStr;
 }
 
+
+
+Future connect() async {
+//  var body = info;
+  String uri = "$baseUrl/";
+
+  var url = Uri.parse(uri);
+
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return data;
+  } else if (response.statusCode == 401) {
+    throw Exception("Unauthorized: Invalid credentials");
+  } else {
+    throw Exception(
+        "Failed to make the request. Status code: ${response.statusCode}");
+  }
+}
 //user
 
 Future createUserAccount({UserName, password, email}) async {
@@ -628,9 +648,9 @@ Future validateResetPasswordToken({token, userId}) async {
   }
 }
 
-// void main() async {
-//   print(await resetPasswordTokenSend("dami600bab@gmail.com"));
-// }
+void main() async {
+  print(await connect());
+}
 
 // void main() async {
 //   print(await newRequests(fromId:  "650320061837f590a3b6652c",toId: "6503204a1837f590a3b6653a"));

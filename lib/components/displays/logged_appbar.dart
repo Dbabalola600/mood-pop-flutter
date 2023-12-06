@@ -3,8 +3,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
-
 import 'package:get/get.dart';
+import 'package:mood_pop/requests/auth_request.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../pages/Settings/settings_page.dart';
@@ -14,7 +14,8 @@ class LoggedAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Function() alertButtonHandler;
   final String appBarTitle;
 
-  const LoggedAppBar({super.key, required this.alertButtonHandler, required this.appBarTitle});
+  const LoggedAppBar(
+      {super.key, required this.alertButtonHandler, required this.appBarTitle});
 
   @override
   _StatefulAppBarState createState() => _StatefulAppBarState();
@@ -32,7 +33,7 @@ class _StatefulAppBarState extends State<LoggedAppBar> {
   @override
   void initState() {
     super.initState();
-    // showInfo();
+    showInfo();
     loadSharedPreferences();
     // Call showInfo when the widget is inserted into the tree.
   }
@@ -43,6 +44,12 @@ class _StatefulAppBarState extends State<LoggedAppBar> {
       username = prefs.getString("username");
       userImage = prefs.getString("image");
     });
+  }
+
+  Future<void> showInfo() async {
+    var response = await connect();
+
+    print(response);
   }
 
   @override

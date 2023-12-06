@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'pages/DashBoard/dash_board_page.dart';
 import 'pages/welcome_page.dart';
+import 'requests/auth_request.dart';
 import 'utils/colours.dart';
 
 // void main() => runApp(const MainApp());
@@ -56,9 +57,17 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   late bool isAppReady = false;
 
+
+  Future<void> showInfo() async {
+      var response = await connect();
+      print(response);
+    }
+
+
   @override
   void initState() {
     super.initState();
+    showInfo();
     initializeApp().then((_) {
       setState(() {
         isAppReady = true;
@@ -99,6 +108,9 @@ class _MainAppState extends State<MainApp> {
 
   Future<GetMaterialApp> checker() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+  
+
+   
 
     if (prefs.getString("userId") == null) {
       return GetMaterialApp(
